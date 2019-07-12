@@ -1,0 +1,141 @@
+﻿社团管理系统数据库设计
+
+<--------------学生相关表----------------->
+
+Students    学生用户表
+id  主键 自增长 整型
+student_id 学号 字符串 不为空 唯一
+name 昵称 唯一 不可为空
+img 头像 字符串 存储图片地址
+password 密码 字符串 不为空
+is_login 在线状态 波尔 不为空
+
+StudentsInfos    学生信息表
+Student_id 主键 外键 Stundents.id
+phone  手机号 唯一 不可为空
+birthday 出生日期 timestamp 不为空
+message 个人信息 字符串 不为空
+school_id 学校id 整形 外键 School.id
+grade 年级 整型 不为空
+college_id 学院id 整型 外键College.id
+major_id 专业id 整型 外键 Major.id
+
+StudentsScore 学生学分表（视图）
+student.id 学生id 外键
+模块1 小整型 默认0 不为空
+模块2 同上
+模块3 同上
+
+<--------------社团相关表----------------->
+
+Organizations    社团表
+id 主键 自增长 整型
+organization_id 社团编号 字符串 唯一 不为空
+name 名称 唯一 不为空
+img 头像 字符串
+password 密码 字符串 不为空
+
+OrganizationsInfos 社团信息表
+Org_id 主键 外键 Organization.id
+foundtime 建立时间 整型 不为空
+message 介绍 字符串 
+college_id 所属学院 外键
+leader_name 负责人姓名 字符串
+leader_contact 负责人联系方式 字符串
+
+<--------------管理员相关表----------------->
+
+Administrator
+id 主键 自增长 整型
+account 用户名 字符串 不为空 唯一
+password 密码 字符串 不为空
+
+<--------------记录表----------------->
+
+LoginLog 登陆记录表
+id 主键 整型 自增长
+user 登陆用户名 不为空
+type 用户类型
+time 登陆时间 timestamp
+ip 登陆使用ip
+
+<--------------社团与学生关系----------------->
+
+Org_Stu 社团与学生对应关系
+id 主键 整型 自增长
+Org_id 外键 组织id
+Stu_id 外键 学生id
+jointime 入会时间 整型 不为空
+
+<--------------活动相关表----------------->
+
+Activity
+id 主键 整型 自增长
+name 活动名称 字符串 唯一 不为空
+img 活动封面 字符串 默认某张图
+message 活动介绍 字符串 不为空
+posttime 发布时间 详细时间 不为空
+starttime 开始时间 详细时间 不为空
+endtime 结束时间 详细时间 不为空
+type 活动类型
+Org_id 组织id 外键
+scoretype 学分类型 字符串 不为空
+poster:发布者 社团id 外键
+isteam tinyint 是否组队
+
+
+<--------------活动学分表------------------------>
+id
+act_id
+level
+score
+
+
+<--------------组队信息表----------------------->
+id
+act_id
+leader
+
+<------------成员表--------------------->
+id
+team_id
+stu_id
+
+
+
+
+<--------------学生与活动的关系----------------->
+
+Act_Stu 活动与学生的关系
+id 主键 整型 自增长
+Stu_id 外键 学会id
+Act_id 外键 活动id
+jointime 报名时间 详细时间 不为空
+checktime 签到时间 详细时间 不为空
+score_id
+
+<--------------消息表----------------->
+
+id 主键 整型 自增长
+text 内容 字符串 不为空 默认“null”
+time 发送时间 详细时间 不为空
+sender 发送者 
+
+<--------------消息与学生关系----------------->
+
+id 主键 整型 自增长0
+.
+stu_id 学生id 外键
+msg_id 消息id 外键
+
+-------------------
+isread 布尔 是否已读
+
+<--------------评论表----------------->
+
+id 主键 整型 自增长
+text 评论内容 字符串 不为空
+act_id 活动id 外键
+sender 发送者id
+time 发送时间 详细时间
+parent 父评论id 
