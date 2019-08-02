@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.Act_examineMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Act_examine">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="posttime" jdbcType="TIMESTAMP" property="posttime" />
+    <result column="extime" jdbcType="TIMESTAMP" property="extime" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+    <result column="act_id" jdbcType="INTEGER" property="actId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, posttime, extime, result, act_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from act_examine
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from act_examine
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Act_examine">
+    insert into act_examine (id, posttime, extime, 
+      result, act_id)
+    values (#{id,jdbcType=INTEGER}, #{posttime,jdbcType=TIMESTAMP}, #{extime,jdbcType=TIMESTAMP}, 
+      #{result,jdbcType=VARCHAR}, #{actId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Act_examine">
+    insert into act_examine
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="posttime != null">
+        posttime,
+      </if>
+      <if test="extime != null">
+        extime,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="actId != null">
+        act_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="posttime != null">
+        #{posttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extime != null">
+        #{extime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="actId != null">
+        #{actId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Act_examine">
+    update act_examine
+    <set>
+      <if test="posttime != null">
+        posttime = #{posttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extime != null">
+        extime = #{extime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="actId != null">
+        act_id = #{actId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Act_examine">
+    update act_examine
+    set posttime = #{posttime,jdbcType=TIMESTAMP},
+      extime = #{extime,jdbcType=TIMESTAMP},
+      result = #{result,jdbcType=VARCHAR},
+      act_id = #{actId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
