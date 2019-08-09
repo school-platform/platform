@@ -3,6 +3,8 @@ package com.example.demo.services;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,10 @@ import com.example.demo.dao.Msg_stu_orgMapper;
 import com.example.demo.dao.Org_studentMapper;
 import com.example.demo.dao.OrganizationMapper;
 import com.example.demo.dao.OrginfosMapper;
+import com.example.demo.dao.ScoretypeMapper;
 import com.example.demo.dao.StudentsMapper;
 import com.example.demo.dao.StudentsinfosMapper;
+import com.example.demo.dao.tooldao.StudenttoolMapper;
 import com.example.demo.domain.College;
 import com.example.demo.domain.Major;
 import com.example.demo.domain.Message;
@@ -23,6 +27,7 @@ import com.example.demo.domain.Msg_stu_org;
 import com.example.demo.domain.Org_student;
 import com.example.demo.domain.Organization;
 import com.example.demo.domain.Orginfos;
+import com.example.demo.domain.Scoretype;
 import com.example.demo.domain.Students;
 import com.example.demo.domain.Studentsinfos;
 
@@ -366,5 +371,133 @@ public class StudentsService {
 	}
 	
 	//学生请求学分信息
+	@Autowired
+	ScoretypeMapper scoretypeMapper;
+	@Autowired
+	StudenttoolMapper studenttoolMapper;
 	
+	public ArrayList<ScoreInfo> getStuScoreInfos(String stu_id) throws Exception{
+		
+		//查询学分类型
+		ArrayList<Scoretype> st_list = scoretypeMapper.selectAll();
+		//装配ScoreInfo类
+		ArrayList<ScoreInfo> si_list = new ArrayList<StudentsService.ScoreInfo>();
+		try {
+			for(Scoretype st:st_list) {
+				//装配学分类型
+				ScoreInfo si = new ScoreInfo();
+				si.setType(st.getName());
+				si.setSum((float) 0.00);
+				//装配ScoreInfoDetail
+				ArrayList<ScoreInfoDetail> sid_list = new ArrayList<StudentsService.ScoreInfoDetail>();
+				ScoreInfoDetail sid = new ScoreInfoDetail();
+				Students student = studentsmapper.selectByStuID(stu_id);
+				List<Map<String,Object>> lm_list = studenttoolMapper.selectScoreInfo(student.getId(), si.getType());
+				for(Map<String,Object> elm:lm_list) {
+					sid.setAct_name((String)elm.get("act_name"));
+					Date date = (Date)elm.get("act_time");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy年mm月dd号");
+					sid.setAct_time(sdf.format(date));
+					date = (Date)elm.get("checktime");
+					sid.setCheck_time(sdf.format(date));
+					date = (Date)elm.get("posttime");
+					sid.setPost_time(sdf.format(date));
+					sid.setReward((String)elm.get("level"));
+					sid.setScore((float)elm.get("score"));
+					System.out.println(sid);
+					sid_list.add(sid);
+					si.setSum(si.getSum()+sid.getScore());
+				}
+				si.setSi_list(sid_list);
+				si_list.add(si);
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+			throw new Exception("学分信息查找失败！\n"+e.getMessage());
+		}
+		System.out.println(si_list);
+		return si_list;
+	}
+	
+	//学生的学分信息类
+	public class ScoreInfo{
+		String type;
+		float sum;
+		ArrayList<ScoreInfoDetail> si_list;
+		public String getType() {
+			return type;
+		}
+		public void setType(String type) {
+			this.type = type;
+		}
+		public float getSum() {
+			return sum;
+		}
+		public void setSum(float sum) {
+			this.sum = sum;
+		}
+		public ArrayList<ScoreInfoDetail> getSi_list() {
+			return si_list;
+		}
+		public void setSi_list(ArrayList<ScoreInfoDetail> si_list) {
+			this.si_list = si_list;
+		}
+		@Override
+		public String toString() {
+			return "ScoreInfo [type=" + type + ", sum=" + sum + ", si_list=" + si_list + "]";
+		}
+		
+		
+	}
+	
+	public class ScoreInfoDetail{
+		String act_name;
+		String act_time;
+		String reward;
+		String post_time;
+		String check_time;
+		float score;
+		public String getAct_name() {
+			return act_name;
+		}
+		public void setAct_name(String act_name) {
+			this.act_name = act_name;
+		}
+		public String getAct_time() {
+			return act_time;
+		}
+		public void setAct_time(String act_time) {
+			this.act_time = act_time;
+		}
+		public String getReward() {
+			return reward;
+		}
+		public void setReward(String reward) {
+			this.reward = reward;
+		}
+		public String getPost_time() {
+			return post_time;
+		}
+		public void setPost_time(String post_time) {
+			this.post_time = post_time;
+		}
+		public String getCheck_time() {
+			return check_time;
+		}
+		public void setCheck_time(String check_time) {
+			this.check_time = check_time;
+		}
+		public float getScore() {
+			return score;
+		}
+		public void setScore(float score) {
+			this.score = score;
+		}
+		@Override
+		public String toString() {
+			return "ScoreInfoDetail [act_name=" + act_name + ", act_time=" + act_time + ", reward=" + reward
+					+ ", post_time=" + post_time + ", check_time=" + check_time + ", score=" + score + "]";
+		}
+		
+	}
 }

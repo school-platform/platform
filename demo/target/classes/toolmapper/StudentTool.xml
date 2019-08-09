@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.tooldao.StudenttoolMapper">
+	<select id="selectScoreInfo" resultType="java.util.HashMap">
+	SELECT
+	act_participant.id AS ap_id,
+	act_participant.stu_id AS stu_id,
+	act_participant.act_id AS act_id,
+	act_participant.posttime AS posttime,
+	act_participant.jointime AS jointime,
+	act_participant.checktime AS checktime,
+	act_participant.score_id AS score_id,
+	act_score.`level` AS `level`,
+	act_score.score AS score,
+	act_score.type AS type,
+	activity.`name` AS act_name,
+	activity.starttime AS act_time
+	FROM
+	act_participant
+	INNER JOIN act_score ON act_participant.score_id = act_score.id
+	INNER JOIN activity ON act_participant.act_id = activity.id AND act_score.act_id = activity.id
+	where act_participant.stu_id=#{stu_id,jdbcType=INTEGER} 
+	and act_score.type=#{type,jdbcType=VARCHAR}
+	</select>
+</mapper>

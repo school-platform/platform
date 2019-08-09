@@ -90,4 +90,16 @@ public class StudentController {
 			return JsonMessage.error(e.getMessage());
 		}
 	}
+	
+	//学生请求自己的学分信息
+	@RequestMapping(value = "student/getScoreInfo" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getScoreInfo(@RequestParam("stu_id")String stu_id) {
+		try {
+			return JsonMessage.success("学分信息查询成功", ss.getStuScoreInfos(stu_id));
+		}catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+			// TODO: handle exception
+		}
+	}
 }

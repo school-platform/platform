@@ -28,6 +28,7 @@ import com.example.demo.dao.Org_studentMapper;
 import com.example.demo.dao.StudentsMapper;
 import com.example.demo.dao.StudentsinfosMapper;
 import com.example.demo.dao.TeammemberMapper;
+import com.example.demo.dao.tooldao.StudenttoolMapper;
 import com.example.demo.domain.Act_examine;
 import com.example.demo.domain.Act_participant;
 import com.example.demo.domain.Act_score;
@@ -551,5 +552,19 @@ public class InitDatas {
 				actm.updateByPrimaryKey(ap);
 			}
 		}
+	}
+	
+	@Autowired
+	StudenttoolMapper studenttoolMapper;
+	@Ignore
+	@Test
+	public void testToolMapper() {
+		System.out.println(studenttoolMapper.selectScoreInfo(1, "B"));
+	}
+	
+	
+	@Test
+	public void testGetScoreInfo() throws Exception {
+		service.getStuScoreInfos("16111205001");
 	}
 }
