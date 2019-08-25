@@ -94,4 +94,47 @@
 输出：创建act_examine所有项供管理员审批
 
 
+管理员：
+1.获取全部学院
+输入：
+输出：name和collegeid
+
+2.获取对应专业
+输入：collegeid
+输出：name,majorid
+
+3.增加学生账号
+输入：students,studentsinfo表的全部字段
+输出：添加
+
+4.删除学生账号
+输入：id
+输出：删除
+
+5.修改学生账号(id不会被修改)
+输入：students,studentsinfo表的全部字段和id
+输出：修改
+
+6.查找学生账号
+输入：页数，个数
+输出：学生students,studentsinfo表的全部字段
+
+7.社团的增删改查与学生的一致
+
+8.获取活动审核列表
+输入：页数，个数
+输出：act_examine的全字段以及活动的name，申请的社团名
+
+9.活动审核
+输入：act_examine的id,ispass,result，posttime服务器生成
+输出：修改act_examine表
+
+10.获取活动详细信息
+输入：act_id
+输出：activity、actinfos全字段,act_score的全字段的数组，社团名称
+
+11.发布消息
+输入：isstudent,isorgan，text
+输出：根据两个布尔值判断是发给学生的还是社团的还是全部，创建message和msg_stu_org的表项
+
 
