@@ -19,4 +19,7 @@ public interface MessageMapper {
     int updateByPrimaryKeyWithBLOBs(Message record);
 
     int updateByPrimaryKey(Message record);
+    
+    int getLastId();//获取最后的id
+    
 }

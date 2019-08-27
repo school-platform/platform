@@ -239,11 +239,11 @@ public class InitDatas {
 			actinfo.setMax(1000/(i%2+1));
 			
 			if(i%2==1) {
-				actinfo.setTmax((byte)5);
-				actinfo.setTmin((byte)2);
+				actinfo.setTmax((int)5);
+				actinfo.setTmin((int)2);
 			}else {
-				actinfo.setTmax((byte)0);
-				actinfo.setTmin((byte)0);
+				actinfo.setTmax((int)0);
+				actinfo.setTmin((int)0);
 			}
 			
 			String msg = "";

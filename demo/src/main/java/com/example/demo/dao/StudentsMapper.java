@@ -1,5 +1,7 @@
 package com.example.demo.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.domain.Students;
@@ -19,4 +21,10 @@ public interface StudentsMapper {
     int updateByPrimaryKey(Students record);
     
     Students selectByStuID(String stu_id);
+    
+    int getLastID();
+    
+    int getIDByStuID(String stu_id);
+    
+    ArrayList<Integer> getAllID();
 }

@@ -92,4 +92,7 @@
       sender_id = #{senderId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getLastId" resultType="int">
+	SELECT id from message ORDER BY id DESC limit 1
+  </select>
 </mapper>

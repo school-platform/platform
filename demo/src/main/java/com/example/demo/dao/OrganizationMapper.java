@@ -1,5 +1,7 @@
 package com.example.demo.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.domain.Organization;
@@ -17,4 +19,8 @@ public interface OrganizationMapper {
     int updateByPrimaryKeySelective(Organization record);
 
     int updateByPrimaryKey(Organization record);
+    
+    int getLastID();
+    
+    ArrayList<Integer> getAllID();
 }

@@ -5,8 +5,8 @@
     <id column="act_id" jdbcType="INTEGER" property="actId" />
     <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
     <result column="max" jdbcType="INTEGER" property="max" />
-    <result column="tmax" jdbcType="TINYINT" property="tmax" />
-    <result column="tmin" jdbcType="TINYINT" property="tmin" />
+    <result column="tmax" jdbcType="INTEGER" property="tmax" />
+    <result column="tmin" jdbcType="INTEGER" property="tmin" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.example.demo.domain.Actinfos">
     <result column="message" jdbcType="LONGVARCHAR" property="message" />
@@ -34,7 +34,7 @@
       tmax, tmin, message
       )
     values (#{actId,jdbcType=INTEGER}, #{endtime,jdbcType=TIMESTAMP}, #{max,jdbcType=INTEGER}, 
-      #{tmax,jdbcType=TINYINT}, #{tmin,jdbcType=TINYINT}, #{message,jdbcType=LONGVARCHAR}
+      #{tmax,jdbcType=INTEGER}, #{tmin,jdbcType=INTEGER}, #{message,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.example.demo.domain.Actinfos">
@@ -70,10 +70,10 @@
         #{max,jdbcType=INTEGER},
       </if>
       <if test="tmax != null">
-        #{tmax,jdbcType=TINYINT},
+        #{tmax,jdbcType=INTEGER},
       </if>
       <if test="tmin != null">
-        #{tmin,jdbcType=TINYINT},
+        #{tmin,jdbcType=INTEGER},
       </if>
       <if test="message != null">
         #{message,jdbcType=LONGVARCHAR},
@@ -90,10 +90,10 @@
         max = #{max,jdbcType=INTEGER},
       </if>
       <if test="tmax != null">
-        tmax = #{tmax,jdbcType=TINYINT},
+        tmax = #{tmax,jdbcType=INTEGER},
       </if>
       <if test="tmin != null">
-        tmin = #{tmin,jdbcType=TINYINT},
+        tmin = #{tmin,jdbcType=INTEGER},
       </if>
       <if test="message != null">
         message = #{message,jdbcType=LONGVARCHAR},
@@ -105,8 +105,8 @@
     update actinfos
     set endtime = #{endtime,jdbcType=TIMESTAMP},
       max = #{max,jdbcType=INTEGER},
-      tmax = #{tmax,jdbcType=TINYINT},
-      tmin = #{tmin,jdbcType=TINYINT},
+      tmax = #{tmax,jdbcType=INTEGER},
+      tmin = #{tmin,jdbcType=INTEGER},
       message = #{message,jdbcType=LONGVARCHAR}
     where act_id = #{actId,jdbcType=INTEGER}
   </update>
@@ -114,8 +114,8 @@
     update actinfos
     set endtime = #{endtime,jdbcType=TIMESTAMP},
       max = #{max,jdbcType=INTEGER},
-      tmax = #{tmax,jdbcType=TINYINT},
-      tmin = #{tmin,jdbcType=TINYINT}
+      tmax = #{tmax,jdbcType=INTEGER},
+      tmin = #{tmin,jdbcType=INTEGER}
     where act_id = #{actId,jdbcType=INTEGER}
   </update>
 </mapper>

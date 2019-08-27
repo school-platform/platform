@@ -3,25 +3,22 @@
 <mapper namespace="com.example.demo.dao.Act_participantMapper">
   <resultMap id="BaseResultMap" type="com.example.demo.domain.Act_participant">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="stu_id" jdbcType="INTEGER" property="stu_Id" />
-    <result column="act_id" jdbcType="INTEGER" property="act_Id" />
+    <result column="stu_id" jdbcType="INTEGER" property="stuId" />
+    <result column="act_id" jdbcType="INTEGER" property="actId" />
     <result column="posttime" jdbcType="TIMESTAMP" property="posttime" />
     <result column="jointime" jdbcType="TIMESTAMP" property="jointime" />
     <result column="checktime" jdbcType="TIMESTAMP" property="checktime" />
     <result column="score_id" jdbcType="INTEGER" property="scoreId" />
+    <result column="ispass" jdbcType="BIT" property="ispass" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, stu_id, act_id, posttime, jointime, checktime, score_id
+    id, stu_id, act_id, posttime, jointime, checktime, score_id, ispass
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from act_participant
     where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectByStuAct" resultType="com.example.demo.domain.Act_participant">
-  	select * from act_participant where stu_id = #{stu_id,jdbcType=INTEGER} 
-  	and act_id = #{act_id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from act_participant
@@ -30,10 +27,10 @@
   <insert id="insert" parameterType="com.example.demo.domain.Act_participant">
     insert into act_participant (id, stu_id, act_id, 
       posttime, jointime, checktime, 
-      score_id)
+      score_id, ispass)
     values (#{id,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{actId,jdbcType=INTEGER}, 
       #{posttime,jdbcType=TIMESTAMP}, #{jointime,jdbcType=TIMESTAMP}, #{checktime,jdbcType=TIMESTAMP}, 
-      #{scoreId,jdbcType=INTEGER})
+      #{scoreId,jdbcType=INTEGER}, #{ispass,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.example.demo.domain.Act_participant">
     insert into act_participant
@@ -59,6 +56,9 @@
       <if test="scoreId != null">
         score_id,
       </if>
+      <if test="ispass != null">
+        ispass,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -81,6 +81,9 @@
       </if>
       <if test="scoreId != null">
         #{scoreId,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null">
+        #{ispass,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -105,6 +108,9 @@
       <if test="scoreId != null">
         score_id = #{scoreId,jdbcType=INTEGER},
       </if>
+      <if test="ispass != null">
+        ispass = #{ispass,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -115,7 +121,14 @@
       posttime = #{posttime,jdbcType=TIMESTAMP},
       jointime = #{jointime,jdbcType=TIMESTAMP},
       checktime = #{checktime,jdbcType=TIMESTAMP},
-      score_id = #{scoreId,jdbcType=INTEGER}
+      score_id = #{scoreId,jdbcType=INTEGER},
+      ispass = #{ispass,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectByStuAct" resultType="BaseResultMap">
+  SELECT * from act_participant 
+	where act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	and act_participant.act_id=#{act_id,jdbcType=INTEGER}
+  </select>
 </mapper>

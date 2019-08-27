@@ -5,9 +5,9 @@ import java.util.Date;
 public class Act_participant {
     private Integer id;
 
-    private Integer stu_Id;
+    private Integer stuId;
 
-    private Integer act_Id;
+    private Integer actId;
 
     private Date posttime;
 
@@ -16,6 +16,8 @@ public class Act_participant {
     private Date checktime;
 
     private Integer scoreId;
+
+    private Boolean ispass;
 
     public Integer getId() {
         return id;
@@ -26,19 +28,19 @@ public class Act_participant {
     }
 
     public Integer getStuId() {
-        return stu_Id;
+        return stuId;
     }
 
     public void setStuId(Integer stuId) {
-        this.stu_Id = stuId;
+        this.stuId = stuId;
     }
 
     public Integer getActId() {
-        return act_Id;
+        return actId;
     }
 
     public void setActId(Integer actId) {
-        this.act_Id = actId;
+        this.actId = actId;
     }
 
     public Date getPosttime() {
@@ -73,9 +75,11 @@ public class Act_participant {
         this.scoreId = scoreId;
     }
 
-	@Override
-	public String toString() {
-		return "Act_participant [id=" + id + ", stu_Id=" + stu_Id + ", act_Id=" + act_Id + ", posttime=" + posttime
-				+ ", jointime=" + jointime + ", checktime=" + checktime + ", scoreId=" + scoreId + "]";
-	}
+    public Boolean getIspass() {
+        return ispass;
+    }
+
+    public void setIspass(Boolean ispass) {
+        this.ispass = ispass;
+    }
 }

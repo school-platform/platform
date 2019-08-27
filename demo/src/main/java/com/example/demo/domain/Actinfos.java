@@ -9,9 +9,9 @@ public class Actinfos {
 
     private Integer max;
 
-    private Byte tmax;
+    private Integer tmax;
 
-    private Byte tmin;
+    private Integer tmin;
 
     private String message;
 
@@ -39,19 +39,19 @@ public class Actinfos {
         this.max = max;
     }
 
-    public Byte getTmax() {
+    public Integer getTmax() {
         return tmax;
     }
 
-    public void setTmax(Byte tmax) {
+    public void setTmax(Integer tmax) {
         this.tmax = tmax;
     }
 
-    public Byte getTmin() {
+    public Integer getTmin() {
         return tmin;
     }
 
-    public void setTmin(Byte tmin) {
+    public void setTmin(Integer tmin) {
         this.tmin = tmin;
     }
 

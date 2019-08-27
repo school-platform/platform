@@ -68,4 +68,8 @@
       collegeid = #{collegeid,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="getIDByColID" resultType="int">
+  select id from college where collegeid=#{col_id,jdbcType=VARCHAR}
+  </select>
 </mapper>

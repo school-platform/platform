@@ -90,4 +90,12 @@
       password = #{password,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="getLastID" resultType="int">
+  select id from organization order by id desc limit 1
+  </select>
+  
+  <select id="getAllID" resultType="int">
+  	select id from organization
+  </select>
 </mapper>

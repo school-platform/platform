@@ -17,4 +17,8 @@ public interface ActivityMapper {
     int updateByPrimaryKeySelective(Activity record);
 
     int updateByPrimaryKey(Activity record);
+    
+    int getOrgid(int act_id);
+    
+    int getLastActID();
 }

@@ -8,4 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface StudenttoolMapper {
 	List<Map<String,Object>> selectScoreInfo(int stu_id,String type); 
+	int getIDByStudentID(String studentid);
 }

@@ -136,4 +136,11 @@
       visible = #{visible,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getOrgid" resultType="int">
+  SELECT activity.org_id from activity WHERE activity.id=#{act_id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getLastActID" resultType="int">
+  select id from activity order by id desc limit 1
+  </select>
 </mapper>

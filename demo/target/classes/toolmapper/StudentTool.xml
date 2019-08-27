@@ -22,4 +22,7 @@
 	where act_participant.stu_id=#{stu_id,jdbcType=INTEGER} 
 	and act_score.type=#{type,jdbcType=VARCHAR}
 	</select>
+	<select id="getIDByStudentID" resultType="int">
+	select id from students where students.studentid=#{studentid,jdbcType=VARCHAR}
+	</select>
 </mapper>

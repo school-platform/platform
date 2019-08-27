@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.tooldao.AdministratorToolMapper">
+	<select id="getAllCollege" resultType="java.util.HashMap">
+	SELECT * from college
+	</select>
+	
+	<select id="getMajorByCollege" resultType="java.util.HashMap">
+	SELECT * from major where major.collegeid=#{col_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getAllStudent" resultType="java.util.HashMap">
+	SELECT * from students limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getAllOrgnization" resultType="java.util.HashMap">
+	SELECT * from organization limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getAllExamine" resultType="javaj.util.HashMap">
+	SELECT act_examine.*,organization.`name` as org_name,activity.`name` as act_name
+	from act_examine
+	LEFT JOIN activity on activity.id=act_examine.act_id
+	LEFT JOIN organization on organization.id=activity.org_id
+	limit #{snum,jdbcType=INTEGER},#{num,jebcType=INTEGER}
+	</select>
+	
+	<update id="examine">
+	UPDATE act_examine
+	SET 
+		act_examine.extime=#{extime,jdbcType=TIMESTAMP},
+		act_examine.result=#{result,jdbcType=VARCHAR}
+	where act_examine.id=#{ex_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getActInfo" resultType="java.util.HashMap">
+	SELECT activity.*,actinfos.*,college.`name` as org_name
+	from activity
+	LEFT JOIN actinfos on actinfos.act_id=activity.id
+	LEFT JOIN college on college.id=activity.org_id
+	where activity.id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getScoreByAct" resultType="java.util.HashMap">
+	SELECT act_score.*
+	from act_score 
+	where act_score.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+</mapper>

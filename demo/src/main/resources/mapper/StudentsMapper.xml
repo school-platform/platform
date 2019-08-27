@@ -106,4 +106,16 @@
       islogin = #{islogin,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="getLastID" resultType="int">
+ 	select id from students order by id desc limit 1
+  </select>
+  
+  <select id="getIDByStuID" resultType="int">
+  	select id from students where studentid=#{stu_id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getAllID" resultType="int">
+  	select id from students
+  </select>
 </mapper>
