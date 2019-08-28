@@ -1,100 +1,51 @@
 <template>
-  <div class="content">
-    <ul>
-      <li>社团ID：</li>
-      <li>
-        <el-input v-model="user.orgid" placeholder="请输入内容" disabled></el-input>
-      </li>
-      <li>社团名称：</li>
-      <li>
-        <el-input v-model="user.name" placeholder="请输入内容"></el-input>
-      </li>
-      <li>建立时间：</li>
-      <li>
-        <el-input v-model="user.foundtime" placeholder="请输入内容"></el-input>
-      </li>
-      <li>所属学院：</li>
-      <li>
-        <el-input v-model="user.college" placeholder="请输入内容"></el-input>
-      </li>
-      <li>团长姓名：</li>
-      <li>
-        <el-input v-model="user.leadername" placeholder="请输入内容"></el-input>
-      </li>
-      <li>联系方式：</li>
-      <li>
-        <el-input v-model="user.leadercontact" placeholder="请输入内容"></el-input>
-      </li>
-
-      <li>简介：</li>
-      <li>
-        <el-input type="textarea" :rows="8" placeholder="请输入内容" v-model="user.message"></el-input>
-      </li>
-    </ul>
-  </div>
+  <el-form ref="form" :model="form" label-width="80px" style="width:500px;">
+    <el-form-item label="活动名称">
+      <el-input v-model="form.name"></el-input>
+    </el-form-item>
+    <el-form-item label="活动时间">
+      <el-input v-model="form.name"></el-input>
+    </el-form-item>
+    <el-form-item label="活动图片">
+      <img :src="imgurl"  style="width:300px;height:300px;" />
+      <input @change="getImgBase()" type="file" />
+    </el-form-item>
+  </el-form>
 </template>
-
 <script>
 export default {
   data() {
     return {
-      imageUrl: "",
-      user: {
-        orgid: "19374882221",
-        name: "开源软件协会",
-        foundtime: "1992-1-1",
-        message:
-          "开源软件协会是计算机与信息学院的社团，一直发布与计算机相关的活动，欢迎大家的参加！",
-        college: "计算机与信息",
-        leadername: "伍方健",
-        leadercontact: "18566958552"
-      }
+      form: {
+        name:"计算机设计大赛",
+        starttime:"2001-1-1-",
+        endtime:"2001-2-3",
+        type:"学科竞赛",
+        isteam:true,
+        message:"实打实大苏打",
+        tmax:5,
+        tmin:3,
+        max:100,
+        score:[{
+          level:"参与奖",
+          score:0.2,
+          type:"A"
+        }]
+      },
+      imgurl: ""
     };
   },
   methods: {
-    handleCommand(command) {},
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
+    getImgBase() {
+      let event = event || window.event;
+      let file = event.target.files[0];
+      let dataURL = window.URL.createObjectURL(file);
+      this.imgurl=dataURL;
     }
   }
 };
 </script>
 
-<style scoped>
-.el-main {
-  line-height: 50px;
-  text-align: left;
-  padding-top: 0px;
-  padding-right: 60px !important;
-}
-.el-main .el-container {
-  margin-top: 0px;
-}
-.el-main {
-  overflow: hidden;
-}
-ul{
-  line-height: 2em;
-  text-align: left;
-  overflow-y: scroll;
-  height:550px;
-}
-.content{
-  padding:10px 10px;
-}
-</style>
 
 
 

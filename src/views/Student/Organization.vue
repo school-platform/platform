@@ -1,27 +1,16 @@
 <template>
   <el-container>
-    <el-header style="text-align: right; font-size: 12px"></el-header>
+    <el-header style="text-align: left; font-size: 18px">我的社团</el-header>
 
     <el-main>
-      <ul
-        class="infinite-list"
-        v-infinite-scroll="load"
-        style="overflow:scroll;overflow-x:hidden;height:100%;"
-      >
-        <li v-for="i in count" class="infinite-list-item" :key="i">
-          <el-container>
-            <el-aside width="200px">
-              <img src="../../assets/avatar.jpg" class="avatar" />
-            </el-aside>
-            <el-main>
-              <ul>
-                <li>社团名：开源软件协会</li>
-                <li>简介：开源软件协会</li>
-              </ul>
-            </el-main>
-          </el-container>
-        </li>
-      </ul>
+      <el-table :data="tableData" style="width: 100%">
+        <el-table-column prop="name" label="社团名称"></el-table-column>
+        <el-table-column prop="foundtime" label="建立时间"></el-table-column>
+        <el-table-column prop="college" label="隶属学院"></el-table-column>
+        <el-table-column prop="leadername" label="会长"></el-table-column>
+        <el-table-column prop="leadercontact" label="联系方式"></el-table-column>
+        <el-table-column prop="jointime" label="入会时间"></el-table-column>
+      </el-table>
     </el-main>
   </el-container>
 </template>
@@ -29,8 +18,16 @@
 <script>
 export default {
   data() {
+    const item = {
+      name:"开源软件协会",
+      foundtime:"1999-11-11",
+      college:"计算机与信息学院",
+      leadername:"伍方健",
+      leadercontact:"17855354884",
+      jointime:"2016"
+    };
     return {
-      count: 10
+      tableData: Array(10).fill(item)
     };
   },
   methods: {
@@ -43,27 +40,6 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-img {
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 50%;
-  position: relative; /*设置position属性*/
-  top: 50%; /*偏移*/
-}
-li .el-main{
-line-height: 2em;
-text-align: left;
-padding-top:0px;
-}
-li .el-container{
-  border-top: 1px solid gray;
-  border-bottom: 1px solid gray;
-  padding: 10px 0px;
-  margin-bottom: 10px;
-}
-</style>
 
 
 

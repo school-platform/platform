@@ -15,8 +15,9 @@
         <el-aside width="200px">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/api/upload"
             :show-file-list="false"
+            :http-request="upload"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
@@ -50,7 +51,7 @@ export default {
         id: "16111205119",
         name: "伍方健",
         sex: "男",
-        birth:"1999-1-1",
+        birth: "1999-1-1",
         grade: "2016",
         institute: "计算机与信息",
         speciality: "软件工程",
@@ -63,7 +64,7 @@ export default {
       this.$prompt("请输入手机号", "修改手机号", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        inputPattern: /./,
+        inputPattern: /^[0-9]{11}$/,
         inputErrorMessage: "手机号格式不正确"
       }).then(({ value }) => {
         this.$message({
@@ -86,77 +87,38 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    upload(f) {
+      this.axios.defaults.headers.post["Content-Type"] = "mutipart/form-data";
+      let param = new FormData();
+      console.log('开始初始化')
+      param.append("file", f.file);
+      param.append("name","伍方健");
+      this.axios
+        .post(f.action, param)
+        .then(response => {
+          alert("上传成功");
+        })
+        .catch(({ err }) => {
+          console.log(err);
+          f.onError();
+        });
     }
   }
 };
 </script>
 
 <style scoped>
-.el-main{
+.el-main {
   line-height: 50px;
   text-align: left;
-  padding-top:0px;
+  padding-top: 0px;
 }
-.el-main .el-container{
+.el-main .el-container {
   margin-top: 20px;
 }
-.el-main{
-  overflow: hidden;
-}
-</style>
-
-
-<style>
-.el-header,
-.el-footer {
-  /* background-color: #b3c0d1; */
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-}
-
-.el-aside {
-  background-color: #e9eef3;
-  color: #333;
-  text-align: center;
-  height: 100%;
-  width:200px;
-}
-
 .el-main {
-  /* background-color: #e9eef3; */
-  color: #333;
-  text-align: center;
-}
-
-.el-container {
-  margin-bottom: 40px;
-  height: 100%;
-}
-
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 50%;
-  cursor: pointer;
-  position: relative;
   overflow: hidden;
-  height: 178px;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
 }
 </style>
 

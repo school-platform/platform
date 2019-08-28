@@ -5,7 +5,7 @@
     </el-header>
 
     <el-main>
-      <el-form :model="ruleForm" status-icon label-width="100px" class="demo-ruleForm container">
+      <el-form :model="ruleForm" status-icon label-width="100px" class="demo-ruleForm container" style="margin-top:100px;">
         <el-form-item label="原密码" prop="oldpass">
           <el-input v-model.number="ruleForm.oldpass"></el-input>
         </el-form-item>

@@ -2,12 +2,13 @@
   <el-container>
     <el-header style="text-align: right; font-size: 12px">
       <span style="float:left;font-size:16px;">会员管理</span>
-      <el-button type="danger" style="margin-right: 5px" icon="el-icon-delete" size="small">删除</el-button>
+
       <el-button
         type="primary"
         style="margin-right: 5px"
         icon="el-icon-circle-plus-outline"
         size="small"
+        @click="addvip"
       >新增</el-button>
       <el-input
         placeholder="请输入姓名或学号"
@@ -35,6 +36,11 @@
         <el-table-column prop="college" label="学院"></el-table-column>
         <el-table-column prop="major" label="专业"></el-table-column>
         <el-table-column prop="jointime" label="加入时间"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-main>
     <el-footer>
@@ -81,12 +87,28 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
+    },
+    addvip: function() {
+      this.$prompt("请输入学生ID", "添加会员", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^[0-9]{11}$/,
+        inputErrorMessage: "ID格式不正确"
+      }).then(({ value }) => {
+        this.$message({
+          type: "success",
+          message: "你的手机号是: " + value
+        });
+      });
     }
   }
 };
 </script>
 <style>
-.cell { 
-    line-height: 27px !important;
+.cell {
+  line-height: 27px !important;
 }
 </style>

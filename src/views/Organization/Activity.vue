@@ -2,6 +2,12 @@
   <el-container>
     <el-header style="text-align: right; font-size: 12px">
       <span style="float:left;font-size:16px;">活动管理</span>
+      <el-button
+        type="primary"
+        style="margin-right: 5px"
+        icon="el-icon-circle-plus-outline"
+        size="small"
+      >发布活动</el-button>
       <el-input
         placeholder="请输入关键字"
         v-model="input"
@@ -27,7 +33,9 @@
         <el-table-column prop="result" label="状态"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="handleClick(scope.$index, scope.row)"><a href="/organization/detail">详细信息</a></el-button>
+            <el-button size="mini" type="primary" @click="handleClick(scope.$index, scope.row)">
+              <a href="/organization/detail">详细信息</a>
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

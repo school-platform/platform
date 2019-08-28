@@ -33,19 +33,19 @@
             </li>
             <li>社团名称：</li>
             <li>
-              <el-input v-model="user.name" placeholder="请输入内容"></el-input>
+              <el-input v-model="user.name" placeholder="请输入内容" disabled></el-input>
             </li>
             <li>建立时间：</li>
             <li>
-              <el-input v-model="user.foundtime" placeholder="请输入内容"></el-input>
+              <el-input v-model="user.foundtime" placeholder="请输入内容" disabled></el-input>
             </li>
             <li>所属学院：</li>
             <li>
-              <el-input v-model="user.college" placeholder="请输入内容"></el-input>
+              <el-input v-model="user.college" placeholder="请输入内容" disabled></el-input>
             </li>
             <li>团长姓名：</li>
             <li>
-              <el-input v-model="user.leadername" placeholder="请输入内容"></el-input>
+              <el-input v-model="user.leadername" placeholder="请输入内容" disabled></el-input>
             </li>
             <li>联系方式：</li>
             <li>

@@ -1,10 +1,9 @@
 <template>
-<el-container>
-    <el-header style="text-align: right; font-size: 12px">
-    </el-header>
+  <el-container>
+    <el-header style="text-align: left; font-size: 18px">修改密码</el-header>
 
     <el-main>
-      <el-form :model="ruleForm" status-icon label-width="100px" class="demo-ruleForm container">
+      <el-form :model="ruleForm" status-icon label-width="100px" class="demo-ruleForm container" style="margin-top:100px;">
         <el-form-item label="原密码" prop="oldpass">
           <el-input v-model.number="ruleForm.oldpass"></el-input>
         </el-form-item>
@@ -43,7 +42,7 @@ h3 {
 .container {
   width: 50%;
 }
-.clearfix span{
+.clearfix span {
   font-size: 18px;
   float: left;
   line-height: 36px;

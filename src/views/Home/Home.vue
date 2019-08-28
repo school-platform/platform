@@ -82,3 +82,57 @@ a{
   color:black;
 }
 </style>
+
+<style>
+.el-header,
+.el-footer {
+  /* background-color: #b3c0d1; */
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
+
+.el-aside {
+  background-color: #e9eef3;
+  color: #333;
+  text-align: center;
+  height: 100%;
+  width: 200px;
+}
+
+.el-main {
+  /* background-color: #e9eef3; */
+  color: #333;
+  text-align: center;
+}
+
+.el-container {
+  margin-bottom: 40px;
+  height: 100%;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  height: 178px;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
