@@ -1,19 +1,20 @@
 <template>
-  <el-container>
+  <el-container style="height:550px;">
     <el-main>
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="日期" width="120">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%">
+        <el-table-column prop="id" label="ID"></el-table-column>
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="grade" label="年级"></el-table-column>
+        <el-table-column prop="college" label="学院"></el-table-column>
+        <el-table-column prop="major" label="专业"></el-table-column>
+        <el-table-column prop="birthday" label="生日"></el-table-column>
+        <el-table-column prop="phone" label="手机"></el-table-column>
+        <el-table-column prop="password" label="密码"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" @click="dialogTableVisible = true">修改</el-button>
+          </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-        <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
       </el-table>
     </el-main>
     <el-footer>
@@ -27,6 +28,13 @@
         :total="100"
       ></el-pagination>
     </el-footer>
+    <el-dialog title="修改信息" :visible.sync="dialogTableVisible">
+      <el-form ref="form" :model="tableData[0]" label-width="80px">
+        <el-form-item label="姓名">
+          <el-input v-model="tableData[0].name"></el-input>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </el-container>
 </template>
 
@@ -34,37 +42,22 @@
 export default {
   data() {
     const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄"
+      id: "16111205119",
+      name: "伍方健",
+      grade: "2019",
+      college: "计算机与信息",
+      major: "软件工程",
+      birthday: "1999-11-26",
+      phone: "17855354884",
+      password: "16111205119"
     };
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        }
-      ],
+      tableData: Array(10).fill(item),
       multipleSelection: [],
       currentPage: 1,
       input: "",
-      select: ""
+      select: "",
+      dialogTableVisible: false
     };
   },
 
@@ -77,13 +70,10 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+    handleClick(index, row) {
+      console.log(index, row);
     }
   }
 };
 </script>
-
-<style scoped>
-.el-container{
-  height: 560px;
-}
-</style>

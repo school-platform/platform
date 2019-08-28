@@ -1,19 +1,28 @@
 <template>
-  <el-container>
+  <el-container style="height:550px;">
     <el-main>
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="日期" width="120">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%">
+        <el-table-column prop="id" label="ID"></el-table-column>
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="grade" label="年级"></el-table-column>
+        <el-table-column prop="college" label="学院"></el-table-column>
+        <el-table-column prop="major" label="专业"></el-table-column>
+        <el-table-column prop="phone" label="手机"></el-table-column>
+        <el-table-column prop="posttime" label="提交时间"></el-table-column>
+        <el-table-column prop="jointime" label="加入时间"></el-table-column>
+        <el-table-column prop="checktime" label="签到时间"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-select placeholder="选择奖项" size="mini">
+              <el-option
+                v-for="item in score"
+                :key="item.level"
+                :label="item.level"
+                :value="item.level"
+              ></el-option>
+            </el-select>
+          </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-        <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
       </el-table>
     </el-main>
     <el-footer>
@@ -34,37 +43,31 @@
 export default {
   data() {
     const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄"
+      id: "16111205119",
+      name: "伍方健",
+      grade: "2019",
+      college: "计算机与信息",
+      major: "软件工程",
+      phone: "17855354884",
+      posttime: "1999-11-11",
+      jointime: "2000-1-1",
+      checktime: "2001-1-1"
     };
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        }
-      ],
-      multipleSelection: [],
+      tableData: Array(10).fill(item),
       currentPage: 1,
-      input: "",
-      select: ""
+      score: [
+          {
+            level: "参与奖",
+            score: 0.2,
+            type: "A"
+          },
+          {
+            level: "优秀奖",
+            score: 0.2,
+            type: "A"
+          }
+        ]
     };
   },
 
@@ -77,17 +80,10 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+    handleClick(index, row) {
+      console.log(index, row);
     }
   }
 };
 </script>
-
-<style scoped>
-.el-container{
-  height: 560px;
-}
-.el-footer {
-    height: 30px !important;
-    padding: 0px 0px !important;
-}
-</style>

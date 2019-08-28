@@ -27,6 +27,7 @@ import Organ_pass from './views/Organization/Passmod'
 import Organ_vip from './views/Organization/Vip'
 import Organ_act from './views/Organization/Activity'
 import Organ_detail from './views/Organization/Detail/Detail'
+import Organ_publish from './views/Organization/Publish'
 
 
 import Man_student from './views/Manager/Student.vue'
@@ -89,6 +90,7 @@ export default new Router({
                 { path: '/organization/activity', component: Organ_act },
                 { path: '/organization/vip', component: Organ_vip },
                 { path: '/organization/passmod', component: Organ_pass },
+                { path: '/organization/publish', component: Organ_publish },
                 {
                     path: '/organization/detail',
                     component: Organ_detail,
