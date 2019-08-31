@@ -126,7 +126,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <select id="selectByStuAct" resultType="BaseResultMap">
+  <select id="selectByStuAct" resultMap="BaseResultMap">
   SELECT * from act_participant 
 	where act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
 	and act_participant.act_id=#{act_id,jdbcType=INTEGER}

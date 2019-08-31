@@ -48,7 +48,7 @@ public class AdministratorController {
 		}
 	}
 	
-	@RequestMapping(value = "admin/getAllStudent" , method = RequestMethod.POST)
+	@RequestMapping(value = "admin/getAllOrgnization" , method = RequestMethod.POST)
 	@ResponseBody
 	public JSONObject getAllOrgnization(@RequestParam("page")int page,@RequestParam("num")int num) {
 		try {
