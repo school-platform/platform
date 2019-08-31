@@ -5,19 +5,19 @@
 	SELECT * from college
 	</select>
 	
-	<select id="getMajorByCollege" resultMap="java.util.HashMap">
+	<select id="getMajorByCollege" resultType="java.util.HashMap">
 	SELECT * from major where major.collegeid=#{col_id,jdbcType=INTEGER}
 	</select>
 	
-	<select id="getAllStudent" resultMap="java.util.HashMap">
+	<select id="getAllStudent" resultType="java.util.HashMap">
 	SELECT * from students limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
 	</select>
 	
-	<select id="getAllOrgnization" resultMap="java.util.HashMap">
+	<select id="getAllOrgnization" resultType="java.util.HashMap">
 	SELECT * from organization limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
 	</select>
 	
-	<select id="getAllExamine" resultMap="java.util.HashMap">
+	<select id="getAllExamine" resultType="java.util.HashMap">
 	SELECT act_examine.*,organization.`name` as org_name,activity.`name` as act_name
 	from act_examine
 	LEFT JOIN activity on activity.id=act_examine.act_id
@@ -33,7 +33,7 @@
 	where act_examine.id=#{ex_id,jdbcType=INTEGER}
 	</update>
 	
-	<select id="getActInfo" resultMap="java.util.HashMap">
+	<select id="getActInfo" resultType="java.util.HashMap">
 	SELECT activity.*,actinfos.*,college.`name` as org_name
 	from activity
 	LEFT JOIN actinfos on actinfos.act_id=activity.id
@@ -41,7 +41,7 @@
 	where activity.id=#{act_id,jdbcType=INTEGER}
 	</select>
 	
-	<select id="getScoreByAct" resultMap="java.util.HashMap">
+	<select id="getScoreByAct" resultType="java.util.HashMap">
 	SELECT act_score.*
 	from act_score 
 	where act_score.act_id=#{act_id,jdbcType=INTEGER}

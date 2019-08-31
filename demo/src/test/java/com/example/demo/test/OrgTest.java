@@ -55,10 +55,23 @@ public class OrgTest {
 		System.out.println(service.getActDetail("51"));
 	}
 	
+	@Ignore
 	@Test
 	public void testMembers() throws Exception{
 //		ArrayList<Map<String,Object>> list = mapper.getTeamMember(1);
 //		System.out.println(list);
 		System.out.println(service.getRegisterList("51", 1, 5));
+	}
+	
+	
+	@Ignore
+	@Test
+	public void TestGetMsg() throws Exception{
+		System.out.println(service.getOrgMsg("17718260001"));
+	}
+	
+	@Test
+	public void TestCommen() throws Exception{
+		System.out.println(service.getCommenList("51", 1, 5));
 	}
 }

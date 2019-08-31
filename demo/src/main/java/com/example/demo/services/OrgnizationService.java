@@ -109,17 +109,22 @@ public class OrgnizationService {
 	//社团请求消息
 	public ArrayList<Map<String,Object>> getOrgMsg(String org_id) throws Exception{
 		try {
+			System.out.println(0);
 			//查询社团id
 			int orgid = orgnizationToolMapper.getIDbyOrgID(org_id);
+			System.out.println(1);
 			//查询信息列表
 			ArrayList<Map<String,Object>> list = orgnizationToolMapper.getOrgMsg(orgid);
+			System.out.println(2);
 			//转换时间类型
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("time");
+			System.out.println(3);
 			TimeExchange.changeTimeDate(list, names);
+			System.out.println(4);
 			return list;
 		}catch (Exception e) {
-			throw new Exception("社团消息查询失败");
+			throw new Exception("社团消息查询失败"+e.getMessage());
 		}
 	}
 	
@@ -213,6 +218,7 @@ public class OrgnizationService {
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("jointime");
 			names.add("checktime");
+			names.add("posttime");
 			list = TimeExchange.changeTimeDate(list, names);
 			boolean isteam = orgnizationToolMapper.isTeam(actid);
 			if(isteam) {

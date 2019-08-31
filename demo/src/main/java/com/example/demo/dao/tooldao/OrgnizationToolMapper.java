@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface OrgnizationToolMapper {
-	public int getIDbyOrgID(String org_id);
+	int getIDbyOrgID(String org_id);
 	public ArrayList<Map<String,Object>> getOrgInfo(String stu_id);//请求社团详细信息
 	public int alterphone(String org_id,String phone);//修改社团联系方式
 	public ArrayList<Map<String,Object>> getVipList(String org_id,int firstnum,int num);//获取会员列表
@@ -29,7 +29,7 @@ public interface OrgnizationToolMapper {
 	public int checkjoin(Date jointime,int act_id,int stu_id);//给同学报名通过
 	public int deleteJoin(int act_id,int stu_id);//删除同学的报名信息
 	public int checkSign();//给同学签到通过
-	public ArrayList<Map<String,Object>> getComList(int act_id,int sum,int num);//获取评论列表
+	public ArrayList<Map<String,Object>> getComList(int act_id,int snum,int num);//获取评论列表
 	public String getComText(int com_id);//获取评论内容
 	public ArrayList<Map<String,Object>> getScoreList(int act_id);//获取学分列表
 	public int grade(int score_id,int stu_id,int act_id);//对选手进行评分

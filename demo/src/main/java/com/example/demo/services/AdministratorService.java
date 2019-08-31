@@ -200,6 +200,13 @@ public class AdministratorService {
 		try {
 			int actid = Integer.parseInt(act_id);
 			Map<String,Object> map = administratorToolMapper.getActInfo(actid);
+			ArrayList<String> names = new ArrayList<String>();
+			names.add("posttime");
+			names.add("starttime");
+			names.add("endtime");
+			ArrayList<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+			list.add(map);
+			TimeExchange.changeTimeDate(list, names);
 			map.put("score", administratorToolMapper.getScoreByAct(actid));
 			return map;
 		} catch (Exception e) {

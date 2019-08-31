@@ -84,7 +84,7 @@ public class OrgnizationController {
 		try {
 			return JsonMessage.success("社团消息查询成功", orgnizationService.getOrgMsg(org_id));
 		}catch (Exception e) {
-			return JsonMessage.error("社团信息查询失败");
+			return JsonMessage.error("社团信息查询失败"+e.getMessage());
 		}
 	}
 	
