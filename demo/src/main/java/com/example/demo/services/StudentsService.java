@@ -208,6 +208,7 @@ public class StudentsService {
 				oid.setJoinTime(sdf.format(os.getJointime()));
 				
 				oid.setLeaderName(oi.getLeadername());
+				oid.setCollegeName(collegeMapper.getNameByID(oi.getOrgid()));
 				
 				oid_list.add(oid);
 			}
@@ -223,8 +224,15 @@ public class StudentsService {
 		String name;
 		String foundTime;
 		String leaderName;
+		String collegeName;
 		String contact;
 		String joinTime;
+		public String getCollegeName() {
+			return collegeName;
+		}
+		public void setCollegeName(String collegeName) {
+			this.collegeName = collegeName;
+		}
 		public String getName() {
 			return name;
 		}

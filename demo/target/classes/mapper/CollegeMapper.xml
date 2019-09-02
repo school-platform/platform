@@ -72,4 +72,8 @@
   <select id="getIDByColID" resultType="int">
   select id from college where collegeid=#{col_id,jdbcType=VARCHAR}
   </select>
+  
+  <select id="getNameByID" resultType="java.lang.String">
+  SELECT college.`name` from college where college.id=#{col_id,jdbcType=INTEGER}
+  </select>
 </mapper>

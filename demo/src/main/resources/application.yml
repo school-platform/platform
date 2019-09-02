@@ -3,7 +3,7 @@ spring:
   datasource:
      url: jdbc:mysql://127.0.0.1:3306/platform?useUnicode=true&characterEncoding=utf8
      username: root
-     password: rice1004
+     password: root
      driver-class-name: com.mysql.jdbc.Driver
 ## Mybatis 配置
 mybatis:
@@ -11,3 +11,5 @@ mybatis:
   type-aliases-package: com.example.demo.domain
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    
+img.path: D://

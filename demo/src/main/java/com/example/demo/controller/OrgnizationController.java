@@ -20,9 +20,9 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "/organ/getinfo" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getOrgInfos(@RequestParam("stu_id")String stu_id) {
+	public JSONObject getOrgInfos(@RequestParam("org_id")String org_id) {
 		try {
-			return JsonMessage.success("社团信息查询成功", orgnizationService.getOrginfos(stu_id));
+			return JsonMessage.success("社团信息查询成功", orgnizationService.getOrginfos(org_id));
 		} catch (Exception e) {
 			return JsonMessage.error("社团查询信息查询失败");
 		}

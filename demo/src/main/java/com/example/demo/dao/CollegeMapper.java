@@ -19,4 +19,6 @@ public interface CollegeMapper {
     int updateByPrimaryKey(College record);
     
     int getIDByColID(String collegeid);
+    
+    String getNameByID(int org_id);
 }
