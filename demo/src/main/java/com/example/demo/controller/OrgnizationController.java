@@ -54,7 +54,7 @@ public class OrgnizationController {
 		try {
 			return JsonMessage.success("会员添加成功", orgnizationService.addVip(org_id, stu_id));
 		}catch (Exception e) {
-			return JsonMessage.error("会员添加失败");
+			return JsonMessage.error(e.getMessage());
 		}
 	}
 	

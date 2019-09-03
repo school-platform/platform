@@ -25,6 +25,7 @@ public class OrgTest {
 	@Autowired
 	OrgnizationToolMapper mapper;
 	
+	@Ignore
 	@Test
 	public void test() throws Exception {
 		System.out.println(service.getOrginfos("17718260001"));
@@ -61,7 +62,6 @@ public class OrgTest {
 //		System.out.println(list);
 		System.out.println(service.getRegisterList("51", 1, 5));
 	}
-	
 	
 	@Ignore
 	@Test

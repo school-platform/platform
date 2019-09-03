@@ -87,6 +87,7 @@
 	SELECT
 	organization.`name`,
 	message.time,
+	message.id,
 	message.text,
 	msg_stu_org.isread
 	from message
@@ -266,6 +267,10 @@
 	
 	<select id="getConuntCommen" resultType="int">
 	select COUNT(comments.id) as sum from comments where comments.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="isVip" resultType="int">
+	SELECT * from org_student where org_student.stu_id=#{stu_id,jdbcType=INTEGER}
 	</select>
 	
 </mapper>

@@ -74,7 +74,9 @@ public class OrgnizationService {
 		int stuid = studenttoolMapper.getIDByStudentID(stu_id);
 		int orgid = orgnizationToolMapper.getIDbyOrgID(org_id);
 		Date jointime = new Date();
-		return orgnizationToolMapper.addVip(orgid, stuid, jointime);
+		if(orgnizationToolMapper.isVip(stuid).isEmpty())
+			return orgnizationToolMapper.addVip(orgid, stuid, jointime);
+		else throw new Exception("该同学已经是会员了！");
 	}
 	
 	//删除会员
