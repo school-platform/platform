@@ -25,10 +25,9 @@ public class OrgTest {
 	@Autowired
 	OrgnizationToolMapper mapper;
 	
-	@Ignore
 	@Test
 	public void test() throws Exception {
-		System.out.println(service.getOrginfos("16111205000"));
+		System.out.println(service.getOrginfos("17718260001"));
 	}
 	
 	@Ignore
@@ -70,6 +69,7 @@ public class OrgTest {
 		System.out.println(service.getOrgMsg("17718260001"));
 	}
 	
+	@Ignore
 	@Test
 	public void TestCommen() throws Exception{
 		System.out.println(service.getCommenList("51", 1, 5));

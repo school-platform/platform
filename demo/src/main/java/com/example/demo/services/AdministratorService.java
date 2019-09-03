@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,11 @@ public class AdministratorService {
 	public ArrayList<Map<String,Object>> getAllStudent(int page,int num) throws Exception{
 		try {
 			int snum = (page-1)*num;
-			return administratorToolMapper.getAllStudent(snum, num);
+			ArrayList<Map<String,Object>> list = administratorToolMapper.getAllStudent(snum, num);
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("count_com", administratorToolMapper.getCountStu());
+			list.add(map);
+			return list;
 		} catch (Exception e) {
 			throw new Exception("学生列表查询失败"+e.getMessage());
 		}
@@ -80,7 +85,11 @@ public class AdministratorService {
 	public ArrayList<Map<String,Object>> getAllOrgnization(int page,int num) throws Exception{
 		try {
 			int snum = (page-1)*num;
-			return administratorToolMapper.getAllOrgnization(snum, num);
+			ArrayList<Map<String,Object>> list = administratorToolMapper.getAllOrgnization(snum, num);
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("count_com", administratorToolMapper.getCountOrg());
+			list.add(map);
+			return list;
 		} catch (Exception e) {
 			throw new Exception("社团列表查询失败"+e.getMessage());
 		}
@@ -173,7 +182,11 @@ public class AdministratorService {
 	public ArrayList<Map<String,Object>> getAllExmaine(int page,int num) throws Exception{
 		try {
 			int snum = (page-1)*num;
-			return administratorToolMapper.getAllExamine(snum, num);
+			ArrayList<Map<String,Object>> list = administratorToolMapper.getAllExamine(snum, num);
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("count_com", administratorToolMapper.getCountExamine());
+			list.add(map);
+			return list;
 		} catch (Exception e) {
 			throw new Exception("获取活动审核列表失败"+e.getMessage());
 		}

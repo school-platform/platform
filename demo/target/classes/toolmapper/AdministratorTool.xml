@@ -22,6 +22,7 @@
 	from act_examine
 	LEFT JOIN activity on activity.id=act_examine.act_id
 	LEFT JOIN organization on organization.id=activity.org_id
+	order by posttime desc
 	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
 	</select>
 	
@@ -45,5 +46,17 @@
 	SELECT act_score.*
 	from act_score 
 	where act_score.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getCountStu" resultType="int">
+	select COUNT(students.id) as sum from students
+	</select>
+	
+	<select id="getCountOrg" resultType="int">
+	select COUNT(organization.id) as sum from organization
+	</select>
+	
+	<select id="getCountExamine" resultType="int">
+	select COUNT(act_participant.id) as sum from act_participant
 	</select>
 </mapper>

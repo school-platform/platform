@@ -3,6 +3,7 @@ package com.example.demo.services;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,8 @@ public class OrgnizationService {
 	//查询社团详细信息
 	@Autowired
 	OrgnizationToolMapper orgnizationToolMapper;
-	public ArrayList<Map<String,Object>> getOrginfos(String stu_id) throws Exception{
-		ArrayList<Map<String,Object>> list = orgnizationToolMapper.getOrgInfo(stu_id);
+	public ArrayList<Map<String,Object>> getOrginfos(String org_id) throws Exception{
+		ArrayList<Map<String,Object>> list = orgnizationToolMapper.getOrgInfo(org_id);
 		//便利map调整date为字符串
 		for(Map map:list) {
 			Date date = (Date)map.get("foundtime");
@@ -60,7 +61,12 @@ public class OrgnizationService {
 	public ArrayList<Map<String,Object>> getVipList(String org_id,int page,int num) throws Exception{
 		ArrayList<String> s = new ArrayList<String>();
 		s.add("jointime");
-		return TimeExchange.changeTimeDate(orgnizationToolMapper.getVipList(org_id, (page-1)*num, num), s);
+		ArrayList<Map<String,Object>> list = orgnizationToolMapper.getVipList(org_id, (page-1)*num, num);
+		TimeExchange.changeTimeDate(orgnizationToolMapper.getVipList(org_id, (page-1)*num, num), s);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("count_stu", orgnizationToolMapper.getCountStu(orgnizationToolMapper.getIDbyOrgID(org_id)));
+		list.add(map);
+		return list;
 	}
 	
 	//添加会员
@@ -100,6 +106,9 @@ public class OrgnizationService {
 					map.put("posttime", " ");
 				}
 			}
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("count_act", orgnizationToolMapper.getCountActivity(orgid));
+			list.add(map);
 			return list;
 		} catch (Exception e) {
 			throw new Exception("活动列表查询失败"+e.getMessage());
@@ -202,6 +211,10 @@ public class OrgnizationService {
 					System.out.println("001");
 				}
 			}
+			
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("count_par", orgnizationToolMapper.getCountParticipant(actid));
+			list.add(map);
 			//返回需要的信息
 			return list;
 		} catch (Exception e) {
@@ -229,6 +242,9 @@ public class OrgnizationService {
 					map.put("member", list2);
 				}
 			}
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("count_par", orgnizationToolMapper.getCountParticipant(actid));
+			list.add(map);
 			return list;
 		} catch (Exception e) {
 			throw new Exception("签到信息查询失败"+e.getMessage());
@@ -318,6 +334,9 @@ public class OrgnizationService {
 			names.add("time");
 			TimeExchange.changeTimeDate(list, names);
 			//将结果返回
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("count_com", orgnizationToolMapper.getConuntCommen(actid));
+			list.add(map);
 			return list;
 		} catch (Exception e) {
 			throw new Exception("评论列表获取失败"+e.getMessage());

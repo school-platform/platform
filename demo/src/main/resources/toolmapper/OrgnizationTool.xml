@@ -8,14 +8,7 @@
 		from organization
 		LEFT JOIN orginfos on organization.id=orginfos.orgid
 		LEFT JOIN college on orginfos.collegeid=college.id
-		where organization.id in
-		(
-			select org_student.org_id from org_student
-			where org_student.stu_id=
-			(
-				select students.id from students where students.studentid=#{stu_id,jdbcType=VARCHAR}
-			)
-		)
+		where organization.orgid=#{org_id,jdbcType=VARCHAR}
 	</select>
 	
 	<select id="getIDbyOrgID" resultType="int">
@@ -257,6 +250,22 @@
 	
 	<select id="getScoreMax" resultType="int">
 	SELECT act_score.max from act_score where act_score.id=#{score_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getCountStu" resultType="int">
+	select COUNT(org_student.stu_id) as sum from org_student where org_student.org_id=#{org_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getCountActivity" resultType="int">
+	select COUNT(activity.id) as sum from activity where activity.org_id=#{org_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getCountParticipant" resultType="int">
+	select COUNT(act_participant.id) as sum from act_participant where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getConuntCommen" resultType="int">
+	select COUNT(comments.id) as sum from comments where comments.act_id=#{act_id,jdbcType=INTEGER}
 	</select>
 	
 </mapper>
