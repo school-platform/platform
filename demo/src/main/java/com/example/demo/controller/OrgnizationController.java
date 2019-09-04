@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,7 +56,7 @@ public class OrgnizationController {
 		try {
 			return JsonMessage.success("会员添加成功", orgnizationService.addVip(org_id, stu_id));
 		}catch (Exception e) {
-			return JsonMessage.error(e.getMessage());
+			return JsonMessage.error("会员添加失败");
 		}
 	}
 	
@@ -78,7 +80,7 @@ public class OrgnizationController {
 		}
 	}
 	
-	@RequestMapping(value = "organ/getOrgMsg" , method = RequestMethod.POST)
+	@RequestMapping(value = "organ/getnews" , method = RequestMethod.POST)
 	@ResponseBody
 	public JSONObject getOrgMSg(@RequestParam("org_id")String org_id) {
 		try {
@@ -88,7 +90,7 @@ public class OrgnizationController {
 		}
 	}
 	
-	@RequestMapping(value = "organ/delOrgMsg" , method = RequestMethod.POST)
+	@RequestMapping(value = "organ/deletenews" , method = RequestMethod.POST)
 	@ResponseBody
 	public JSONObject deleteOrgMsg(@RequestParam("org_id")String org_id,@RequestParam("msg_id")String msg_id) {
 		try {
@@ -98,7 +100,7 @@ public class OrgnizationController {
 		}
 	}
 	
-	@RequestMapping(value = "organ/readMsg" , method = RequestMethod.POST)
+	@RequestMapping(value = "organ/readnews" , method = RequestMethod.POST)
 	@ResponseBody
 	public JSONObject readMsg(@RequestParam("org_id")String org_id,@RequestParam("msg_id")String msg_id) {
 		try {
@@ -190,9 +192,17 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/publishActivity" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject publishActivity(@RequestParam("data")JSONObject data) {
+	public JSONObject publishActivity(@RequestParam("data")String data) {
 		try {
-			return JsonMessage.success("活动发布成功，请等待审核", orgnizationService.publishActivity(data));
+			JSONObject act = JSONObject.fromObject(data);
+			System.out.println("id"+act.get("id"));
+			if((boolean) act.get("isteam")) {
+				System.out.println("shi");
+			}else {
+				System.out.println("fou");
+			}
+			return JsonMessage.success("活动发布成功，请等待审核", "ok");
+			//return JsonMessage.success("活动发布成功，请等待审核", orgnizationService.publishActivity(data));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

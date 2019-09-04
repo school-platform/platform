@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,9 +63,10 @@ public class AdministratorController {
 	
 	@RequestMapping(value = "admin/addStudent" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject addStudent(@RequestParam("data")JSONObject data) {
+	public JSONObject addStudent(@RequestBody String jsonStr) {
 		try {
-			return JsonMessage.success("学生添加成功",administratorService.addStudent(data));
+			JSONObject obj = JSONObject.fromObject(jsonStr);
+			return JsonMessage.success("学生添加成功",administratorService.addStudent(obj));
 		} catch (Exception e) {
 			return JsonMessage.error("学生添加失败");
 		}
@@ -70,9 +74,10 @@ public class AdministratorController {
 	
 	@RequestMapping(value = "admin/addOrgnization" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject addOrgnization(@RequestParam("data")JSONObject data) {
+	public JSONObject addOrgnization(@RequestBody String jsonStr) {
 		try {
-			return JsonMessage.success("社团添加成功", administratorService.addOrgnization(data));
+			JSONObject obj = JSONObject.fromObject(jsonStr);
+			return JsonMessage.success("社团添加成功", administratorService.addOrgnization(obj));
 		} catch (Exception e) {
 			return JsonMessage.error("添加社团失败");
 		}
