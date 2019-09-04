@@ -1,24 +1,24 @@
-����getinfoȱ��img��collegename
+﻿社团getinfo缺少img和collegename
 
-�ദ��ѯ���ص�ʱ��û��ת��
+多处查询返回的时间没有转换
 
-���еķ��ز�ѯ���ܸ����ķ���ֵҪ����֪�����ݲ����磺
+所有的返回查询的总个数的返回值要和已知的数据并列如：
 data:{array:[],count_act:1}
 
-�������ӻ�Ա����
+社团添加会员出错
 
-�������Ż�ȡ�����ϸ��Ϣ���͹���Ա��getActInfoһ��
+添加社团获取活动的详细信息：和管理员的getActInfo一致
 
-����ɾ����Ϣ�ɹ�Ӧ���ء���Ϣɾ���ɹ�����ѧ��ɾ����ϢҲҪһ����
+社团删除信息成功应返回”消息删除成功“（学生删除信息也要一样）
 
-���Ż�ȡ�����б���ǩ���б��ĸ�ʽҪ��
-ap_id����Ҫ���鳤����Ա�����鳤��posttime,jointime��checktime����Ա���鳤�����ݸ�ʽҪ����һ��
+社团获取报名列表和签到列表的格式要求：
+ap_id不需要，组长与组员公用组长的posttime,jointime，checktime，组员和组长的数据格式要保持一致
 
-activity����act_participant������ƴ�������
+activity表和act_participant表的设计存在问题
 
-getAllStudent��getAllOrgnization��ʱ��ûת��ѧԺ��רҵҪ��������
+getAllStudent和getAllOrgnization的时间没转，学院和专业要返回名字
 
-addStudent��addOrganization����
+addStudent，addOrganization报错
 
 
 
