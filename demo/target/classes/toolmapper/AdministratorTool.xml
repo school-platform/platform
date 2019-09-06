@@ -10,16 +10,23 @@
 	</select>
 	
 	<select id="getAllStudent" resultType="java.util.HashMap">
-	SELECT students.*,studentsinfos.*
+	SELECT 
+	students.*,
+	studentsinfos.*,
+	college.`name` as col_name,
+	major.`name` as maj_name
 	from students
 	LEFT JOIN studentsinfos on students.id=studentsinfos.studentid 
+	LEFT JOIN college on studentsinfos.collegeid=college.id
+	LEFT JOIN major on studentsinfos.majorid=major.id
 	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
 	</select>
 	
 	<select id="getAllOrgnization" resultType="java.util.HashMap">
-	SELECT organization.*,orginfos.*
+	SELECT organization.*,orginfos.*,college.`name` as col_name
 	from organization
 	LEFT JOIN orginfos ON organization.id=orginfos.orgid  
+	LEFT JOIN college on orginfos.collegeid=college.id
 	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
 	</select>
 	

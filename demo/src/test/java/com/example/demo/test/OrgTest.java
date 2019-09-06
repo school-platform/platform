@@ -25,7 +25,6 @@ public class OrgTest {
 	@Autowired
 	OrgnizationToolMapper mapper;
 	
-	@Ignore
 	@Test
 	public void test() throws Exception {
 		System.out.println(service.getOrginfos("17718260001"));

@@ -4,11 +4,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.services.AdministratorService;
 import com.example.demo.services.OrgnizationService;
 import com.example.demo.tools.JsonMessage;
 import com.example.demo.tools.TimeExchange;
@@ -19,11 +21,14 @@ import net.sf.json.JSONObject;
 public class OrgnizationController {
 	@Autowired
 	OrgnizationService orgnizationService;
+	@Autowired
+	AdministratorService administratorService;
 	
 	@RequestMapping(value = "/organ/getinfo" , method = RequestMethod.POST)
 	@ResponseBody
 	public JSONObject getOrgInfos(@RequestParam("org_id")String org_id) {
 		try {
+			System.out.println(orgnizationService.getOrginfos(org_id));
 			return JsonMessage.success("社团信息查询成功", orgnizationService.getOrginfos(org_id));
 		} catch (Exception e) {
 			return JsonMessage.error("社团查询信息查询失败");
@@ -94,7 +99,7 @@ public class OrgnizationController {
 	@ResponseBody
 	public JSONObject deleteOrgMsg(@RequestParam("org_id")String org_id,@RequestParam("msg_id")String msg_id) {
 		try {
-			return JsonMessage.success("社团信息查询成功", orgnizationService.deleteMsgByOrgMsg(org_id, msg_id));
+			return JsonMessage.success("消息删除成功", orgnizationService.deleteMsgByOrgMsg(org_id, msg_id));
 		}catch (Exception e) {
 			return JsonMessage.error("社团信息删除失败");
 		}
@@ -192,17 +197,26 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/publishActivity" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject publishActivity(@RequestParam("data")String data) {
+	public JSONObject publishActivity(@RequestBody String jsonStr) {
 		try {
-			JSONObject act = JSONObject.fromObject(data);
+			JSONObject act = JSONObject.fromObject(jsonStr);
 			System.out.println("id"+act.get("id"));
 			if((boolean) act.get("isteam")) {
 				System.out.println("shi");
 			}else {
 				System.out.println("fou");
 			}
-			return JsonMessage.success("活动发布成功，请等待审核", "ok");
-			//return JsonMessage.success("活动发布成功，请等待审核", orgnizationService.publishActivity(data));
+			return JsonMessage.success("活动发布成功，请等待审核", orgnizationService.publishActivity(act));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "organ/getActInfo" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getActInfo(@RequestParam("act_id")String act_id) {
+		try {
+			return JsonMessage.success("活动信息获取成功", administratorService.getActInfo(act_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

@@ -62,10 +62,11 @@ public class OrgnizationService {
 		ArrayList<String> s = new ArrayList<String>();
 		s.add("jointime");
 		ArrayList<Map<String,Object>> list = orgnizationToolMapper.getVipList(org_id, (page-1)*num, num);
-		TimeExchange.changeTimeDate(orgnizationToolMapper.getVipList(org_id, (page-1)*num, num), s);
+		TimeExchange.changeTimeDate(list, s);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("count_stu", orgnizationToolMapper.getCountStu(orgnizationToolMapper.getIDbyOrgID(org_id)));
 		list.add(map);
+		
 		return list;
 	}
 	
@@ -371,7 +372,7 @@ public class OrgnizationService {
 	public int grade(String score_id,String stu_id,String act_id) throws Exception{
 		try {
 			int scoreid = Integer.parseInt(score_id);
-			int stuid = Integer.parseInt(stu_id);
+			int stuid = studenttoolMapper.getIDByStudentID(stu_id);
 			int actid = Integer.parseInt(act_id);
 			//判断获奖人数
 			int max = orgnizationToolMapper.getScoreMax(scoreid);

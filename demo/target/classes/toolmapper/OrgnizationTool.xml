@@ -4,7 +4,7 @@
 	namespace="com.example.demo.dao.tooldao.OrgnizationToolMapper">
 	<select id="getOrgInfo" resultType="java.util.HashMap">
 		select
-		organization.orgid,orginfos.message,organization.name,foundtime,college.name,leadername,leadercontact
+		organization.orgid,organization.img,orginfos.message,organization.name as org_name,foundtime,college.name as col_name,leadername,leadercontact
 		from organization
 		LEFT JOIN orginfos on organization.id=orginfos.orgid
 		LEFT JOIN college on orginfos.collegeid=college.id

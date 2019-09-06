@@ -73,7 +73,7 @@ public class StudentController {
 	public JSONObject deleteNews(@RequestParam("stu_id")String stu_id,@RequestParam("msg_id")String msg_id) {
 		try {
 			System.out.println(stu_id+"||"+msg_id);
-			return JsonMessage.success("删除操作成功", ss.deleteMessage(stu_id, msg_id));
+			return JsonMessage.success("消息删除成功", ss.deleteMessage(stu_id, msg_id));
 		}catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

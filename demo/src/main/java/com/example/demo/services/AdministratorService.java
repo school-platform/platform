@@ -75,6 +75,9 @@ public class AdministratorService {
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("count_com", administratorToolMapper.getCountStu());
 			list.add(map);
+			ArrayList<String> names = new ArrayList<String>();
+			names.add("birthday");
+			TimeExchange.changeTimeDate(list, names);
 			return list;
 		} catch (Exception e) {
 			throw new Exception("学生列表查询失败"+e.getMessage());
@@ -89,6 +92,9 @@ public class AdministratorService {
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("count_com", administratorToolMapper.getCountOrg());
 			list.add(map);
+			ArrayList<String> names = new ArrayList<String>();
+			names.add("foundtime");
+			TimeExchange.changeTimeDate(list, names);
 			return list;
 		} catch (Exception e) {
 			throw new Exception("社团列表查询失败"+e.getMessage());
@@ -186,6 +192,10 @@ public class AdministratorService {
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("count_com", administratorToolMapper.getCountExamine());
 			list.add(map);
+			ArrayList<String> names = new ArrayList<String>();
+			names.add("posttime");
+			names.add("extime");
+			TimeExchange.changeTimeDate(list, names);
 			return list;
 		} catch (Exception e) {
 			throw new Exception("获取活动审核列表失败"+e.getMessage());
