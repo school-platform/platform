@@ -17,6 +17,9 @@ import com.example.demo.controller.OrgnizationController;
 import com.example.demo.dao.tooldao.OrgnizationToolMapper;
 import com.example.demo.services.OrgnizationService;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class OrgTest {
@@ -43,7 +46,7 @@ public class OrgTest {
 		System.out.println(service.getVipList("17718260001", 1, 5));
 	}
 	
-	
+	@Ignore
 	@Test
 	public void testAddVip() throws Exception{
 		System.out.println(mapper.isVip(200,1)==null);
@@ -73,5 +76,32 @@ public class OrgTest {
 	@Test
 	public void TestCommen() throws Exception{
 		System.out.println(service.getCommenList("51", 1, 5));
+	}
+	
+	@Test
+	public void testAddActivity() throws Exception{
+		JSONObject json = new JSONObject();
+		json.put("isteam", false);
+		json.put("name", "配音活动");
+		json.put("org_id", "17718264651");
+		json.put("starttime", "2019/12/12");
+		json.put("type", "B模块");
+		json.put("endtime", "2019/12/30");
+		json.put("max", "1000");
+		json.put("message", "配音活动");
+		
+		//构造第一个学分
+		JSONArray ja = new JSONArray();
+		JSONObject score = new JSONObject();
+		score.put("level", "1");
+		score.put("max", 1000);
+		score.put("score", 3.0);
+		score.put("type", "B");
+		ja.add(score);
+		
+		//将学分加入测试对象
+		json.put("score", ja);
+		
+		service.publishActivity(json);
 	}
 }
