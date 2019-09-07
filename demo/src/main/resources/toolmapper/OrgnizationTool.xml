@@ -269,8 +269,9 @@
 	select COUNT(comments.id) as sum from comments where comments.act_id=#{act_id,jdbcType=INTEGER}
 	</select>
 	
-	<select id="isVip" resultType="int">
-	SELECT * from org_student where org_student.stu_id=#{stu_id,jdbcType=INTEGER}
+	<select id="isVip" resultType="java.util.HashMap">
+	SELECT id from org_student where org_student.stu_id=#{stu_id,jdbcType=INTEGER} 
+	and org_student.org_id=#{org_id,jdbcType=INTEGER}
 	</select>
 	
 </mapper>

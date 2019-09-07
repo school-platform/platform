@@ -2,10 +2,10 @@
 
 --多处查询返回的时间没有转换
 
-所有的返回查询的总个数的返回值要和已知的数据并列如：
+--所有的返回查询的总个数的返回值要和已知的数据并列如：
 data:{array:[],count_act:1}
 
-社团添加会员出错
+--社团添加会员出错
 
 --添加社团获取活动的详细信息：和管理员的getActInfo一致
 
@@ -16,7 +16,7 @@ data:{array:[],count_act:1}
 
 --getAllStudent和getAllOrgnization的时间没转，学院和专业要返回名字
 
-addStudent，addOrganization报错
+--addStudent，addOrganization报错
 
 
 

@@ -39,5 +39,5 @@ public interface OrgnizationToolMapper {
 	int getCountActivity(int org_id);//请求社团中的所有活动个数
 	int getCountParticipant(int act_id);//获得活动中参与人员总数
 	int getConuntCommen(int act_id);//获取活动的评论总数
-	Map<String,Object> isVip(int stu_id);//判断学生是不是会员
+	Map<String,Object> isVip(int stu_id,int org_id);//判断学生是不是会员
 }

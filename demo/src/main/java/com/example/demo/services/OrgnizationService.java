@@ -58,16 +58,16 @@ public class OrgnizationService {
 	}
 	
 	//查询社团会员
-	public ArrayList<Map<String,Object>> getVipList(String org_id,int page,int num) throws Exception{
+	public JSONObject getVipList(String org_id,int page,int num) throws Exception{
 		ArrayList<String> s = new ArrayList<String>();
 		s.add("jointime");
 		ArrayList<Map<String,Object>> list = orgnizationToolMapper.getVipList(org_id, (page-1)*num, num);
 		TimeExchange.changeTimeDate(list, s);
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("count_stu", orgnizationToolMapper.getCountStu(orgnizationToolMapper.getIDbyOrgID(org_id)));
-		list.add(map);
-		
-		return list;
+		JSONObject json = new JSONObject();
+		json.put("list", list);
+		json.put("count_num", orgnizationToolMapper.getCountStu(orgnizationToolMapper.getIDbyOrgID(org_id)));
+		return json;
 	}
 	
 	//添加会员
@@ -75,7 +75,7 @@ public class OrgnizationService {
 		int stuid = studenttoolMapper.getIDByStudentID(stu_id);
 		int orgid = orgnizationToolMapper.getIDbyOrgID(org_id);
 		Date jointime = new Date();
-		if(orgnizationToolMapper.isVip(stuid).isEmpty())
+		if(orgnizationToolMapper.isVip(stuid,orgid)==null)
 			return orgnizationToolMapper.addVip(orgid, stuid, jointime);
 		else throw new Exception("该同学已经是会员了！");
 	}
@@ -94,7 +94,7 @@ public class OrgnizationService {
 	}
 	
 	//获取活动列表
-	public ArrayList<Map<String,Object>> getActList(String org_id,int page,int num) throws Exception{
+	public JSONObject getActList(String org_id,int page,int num) throws Exception{
 		try {
 			int snum = (page-1)*num;
 			int orgid = orgnizationToolMapper.getIDbyOrgID(org_id);
@@ -109,10 +109,10 @@ public class OrgnizationService {
 					map.put("posttime", " ");
 				}
 			}
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("count_act", orgnizationToolMapper.getCountActivity(orgid));
-			list.add(map);
-			return list;
+			JSONObject json = new JSONObject();
+			json.put("list", list);
+			json.put("count", orgnizationToolMapper.getCountActivity(orgid));
+			return json;
 		} catch (Exception e) {
 			throw new Exception("活动列表查询失败"+e.getMessage());
 		}
@@ -187,7 +187,7 @@ public class OrgnizationService {
 	}
 	
 	//获取报名列表
-	public ArrayList<Map<String,Object>> getRegisterList(String act_id,int page,int num) throws Exception{
+	public JSONObject getRegisterList(String act_id,int page,int num) throws Exception{
 		try {
 			int snum = (page-1)*num;
 			int actid = Integer.parseInt(act_id);
@@ -214,19 +214,19 @@ public class OrgnizationService {
 					System.out.println("001");
 				}
 			}
-			
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("count_par", orgnizationToolMapper.getCountParticipant(actid));
-			list.add(map);
+			JSONObject json = new JSONObject();
+			json.put("list", list);
+			json.put("count", orgnizationToolMapper.getCountParticipant(actid));
 			//返回需要的信息
-			return list;
+			
+			return json;
 		} catch (Exception e) {
 			throw new Exception("报名信息查询失败"+e.getMessage());
 		}
 	}
 	
 	//获取签到列表
-	public ArrayList<Map<String,Object>> getSignList(String act_id,int page,int num) throws Exception{
+	public JSONObject getSignList(String act_id,int page,int num) throws Exception{
 		try {
 			int actid = Integer.parseInt(act_id);
 			int snum = (page-1)*num;
@@ -245,10 +245,10 @@ public class OrgnizationService {
 					map.put("member", list2);
 				}
 			}
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("count_par", orgnizationToolMapper.getCountParticipant(actid));
-			list.add(map);
-			return list;
+			JSONObject json = new JSONObject();
+			json.put("list", list);
+			json.put("count", orgnizationToolMapper.getCountParticipant(actid));
+			return json;
 		} catch (Exception e) {
 			throw new Exception("签到信息查询失败"+e.getMessage());
 		}
@@ -321,7 +321,7 @@ public class OrgnizationService {
 	}
 	
 	//获取活动评论列表
-	public ArrayList<Map<String,Object>> getCommenList(String act_id,int page ,int num) throws Exception{
+	public JSONObject getCommenList(String act_id,int page ,int num) throws Exception{
 		try {
 			int actid = Integer.parseInt(act_id);
 			int snum = (page-1)*num;
@@ -337,10 +337,10 @@ public class OrgnizationService {
 			names.add("time");
 			TimeExchange.changeTimeDate(list, names);
 			//将结果返回
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("count_com", orgnizationToolMapper.getConuntCommen(actid));
-			list.add(map);
-			return list;
+			JSONObject json = new JSONObject();
+			json.put("list", list);
+			json.put("count",  orgnizationToolMapper.getConuntCommen(actid));
+			return json;
 		} catch (Exception e) {
 			throw new Exception("评论列表获取失败"+e.getMessage());
 		}

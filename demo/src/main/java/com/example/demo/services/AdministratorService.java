@@ -68,34 +68,34 @@ public class AdministratorService {
 	}
 	
 	//获取学生列表
-	public ArrayList<Map<String,Object>> getAllStudent(int page,int num) throws Exception{
+	public JSONObject getAllStudent(int page,int num) throws Exception{
 		try {
 			int snum = (page-1)*num;
 			ArrayList<Map<String,Object>> list = administratorToolMapper.getAllStudent(snum, num);
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("count_com", administratorToolMapper.getCountStu());
-			list.add(map);
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("birthday");
 			TimeExchange.changeTimeDate(list, names);
-			return list;
+			JSONObject json = new JSONObject();
+			json.put("list", list);
+			json.put("count", administratorToolMapper.getCountStu());
+			return json;
 		} catch (Exception e) {
 			throw new Exception("学生列表查询失败"+e.getMessage());
 		}
 	}
 	
 	//获取社团列表
-	public ArrayList<Map<String,Object>> getAllOrgnization(int page,int num) throws Exception{
+	public JSONObject getAllOrgnization(int page,int num) throws Exception{
 		try {
 			int snum = (page-1)*num;
 			ArrayList<Map<String,Object>> list = administratorToolMapper.getAllOrgnization(snum, num);
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("count_com", administratorToolMapper.getCountOrg());
-			list.add(map);
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("foundtime");
 			TimeExchange.changeTimeDate(list, names);
-			return list;
+			JSONObject json = new JSONObject();
+			json.put("list", list);
+			json.put("count", administratorToolMapper.getCountStu());
+			return json;
 		} catch (Exception e) {
 			throw new Exception("社团列表查询失败"+e.getMessage());
 		}
@@ -112,6 +112,8 @@ public class AdministratorService {
 			student.setName(data.getString("name"));
 			student.setPassword(data.getString("password"));
 			student.setStudentid(data.getString("stu_id"));
+			student.setIslogin(data.getBoolean("islogin"));
+			System.out.println(student);
 			studentsMapper.insert(student);
 			//组建学生信息类
 			Studentsinfos stuinfo = new Studentsinfos();
@@ -122,6 +124,7 @@ public class AdministratorService {
 			stuinfo.setMajorid(data.getInt("major_id"));
 			stuinfo.setMessage(data.getString("message"));
 			stuinfo.setPhone(data.getString("phone"));
+			System.out.println(stuinfo);
 			studentsinfosMapper.insert(stuinfo);
 			return 0;
 		} catch (Exception e) {
@@ -134,7 +137,7 @@ public class AdministratorService {
 		try {
 			//组建社团类
 			Organization org = new Organization();
-			int id = organizationMapper.getLastID();
+			int id = organizationMapper.getLastID()+1;
 			org.setId(id);
 			org.setImg("");//设置社团图片
 			org.setName(data.getString("name"));
@@ -185,18 +188,18 @@ public class AdministratorService {
 	}
 	
 	//获得审核活动列表
-	public ArrayList<Map<String,Object>> getAllExmaine(int page,int num) throws Exception{
+	public JSONObject getAllExmaine(int page,int num) throws Exception{
 		try {
 			int snum = (page-1)*num;
 			ArrayList<Map<String,Object>> list = administratorToolMapper.getAllExamine(snum, num);
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("count_com", administratorToolMapper.getCountExamine());
-			list.add(map);
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("posttime");
 			names.add("extime");
 			TimeExchange.changeTimeDate(list, names);
-			return list;
+			JSONObject json = new JSONObject();
+			json.put("list", list);
+			json.put("count", administratorToolMapper.getCountExamine());
+			return json;
 		} catch (Exception e) {
 			throw new Exception("获取活动审核列表失败"+e.getMessage());
 		}

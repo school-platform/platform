@@ -51,7 +51,7 @@ public class OrgnizationController {
 		try {
 			return JsonMessage.success("会员信息查询成功", orgnizationService.getVipList(org_id, page, num));
 		}catch (Exception e) {
-			return JsonMessage.error("社团信息查询失败");
+			return JsonMessage.error("会员信息查询失败"+e.getMessage());
 		}
 	}
 	

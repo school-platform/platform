@@ -25,6 +25,7 @@ public class OrgTest {
 	@Autowired
 	OrgnizationToolMapper mapper;
 	
+	@Ignore
 	@Test
 	public void test() throws Exception {
 		System.out.println(service.getOrginfos("17718260001"));
@@ -42,10 +43,10 @@ public class OrgTest {
 		System.out.println(service.getVipList("17718260001", 1, 5));
 	}
 	
-	@Ignore
+	
 	@Test
 	public void testAddVip() throws Exception{
-		System.out.println(service.addVip("17718260001", "16111205140"));
+		System.out.println(mapper.isVip(200,1)==null);
 	}
 	
 	@Ignore
