@@ -108,4 +108,18 @@ public class UserController {
 			return JsonMessage.error(e.getMessage());
 		}
 	}
+	
+	@Autowired
+	//获取热门活动
+	@RequestMapping(value = "/hotAct" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject hotAct() {
+		try {
+			int page = 1;int num = 8;
+			return JsonMessage.success("热门活动获取成功", studentService.getHotAct(page, num));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
 }

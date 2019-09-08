@@ -625,4 +625,18 @@ public class StudentsService {
 			throw new Exception("活动信息获取失败"+e.getMessage());
 		}
 	}
+	
+	//获取热门活动
+	public ArrayList<Map<String,Object>> getHotAct(int page,int num) throws Exception{
+		try {
+			int snum = (page-1)*num;
+			ArrayList<Map<String,Object>> list = studenttoolMapper.getHotAct(snum, num);
+			ArrayList<String> names = new ArrayList<String>();
+			names.add("starttime");
+			names.add("endtime");
+			return TimeExchange.changeTimeDate(list, names);
+		} catch (Exception e) {
+			throw new Exception("活动获取失败");
+		}
+	}
 }

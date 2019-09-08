@@ -96,7 +96,7 @@
 	and teammember.stu_id=#{stu_id,jdbcType=INTEGER]}
 	</delete>
 	
-	<select id="getNewAct">
+	<select id="getNewAct" resultType="java.util.HashMap">
 	SELECT 
 	activity.id,
 	activity.name,
@@ -116,4 +116,24 @@
 	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
 	</select>
 	
+	<select id="getHotAct" resultType="java.util.HashMap">
+	SELECT 
+	activity.id,
+	activity.name,
+	activity.img,
+	activity.starttime,
+	actinfos.endtime,
+	population.num
+	from activity
+	left join (
+		SELECT act_participant.act_id,
+			count(act_participant.stu_id) as num
+			from act_participant
+			GROUP BY act_participant.act_id
+	) as population on population.act_id = activity.id
+	left join actinfos on activity.id=actinfos.act_id
+	order by num desc
+	where actinfos.endtime<#{endtime,jdbcType=TIMESTAMP}
+	limit 0,8
+	</select>
 </mapper>

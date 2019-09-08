@@ -209,6 +209,13 @@ public class OrgnizationService {
 					System.out.println(list2);
 					System.out.println(names);
 					if(!list2.isEmpty()) list2 = TimeExchange.changeTimeDate(list2, names);
+					//对list2进行循环同步元素格式
+					for(Map<String,Object> map2:list2) {
+						if(map.containsKey("jointime"))
+							map2.put("jointime",map.get("jointime"));
+						if(map.containsKey("checktime"))
+							map2.put("checktime", map.get("checktime"));
+					}
 					System.out.println("004");
 					map.put("member", list2);
 					System.out.println("001");
@@ -243,6 +250,12 @@ public class OrgnizationService {
 					list2 = orgnizationToolMapper.getTeamMember((int)map.get("ap_id"));
 					if(!list2.isEmpty()) list2 = TimeExchange.changeTimeDate(list2, names);
 					map.put("member", list2);
+					for(Map<String,Object> map2:list2) {
+						if(map.containsKey("jointime"))
+							map2.put("jointime",map.get("jointime"));
+						if(map.containsKey("checktime"))
+							map2.put("checktime", map.get("checktime"));
+					}
 				}
 			}
 			JSONObject json = new JSONObject();
