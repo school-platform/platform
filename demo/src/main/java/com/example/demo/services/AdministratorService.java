@@ -274,4 +274,12 @@ public class AdministratorService {
 			throw new Exception("消息发送失败"+e.getMessage());
 		}
 	}
+	
+	public int upPass(String admin_acc,String password) throws Exception{
+		try {
+			return administratorToolMapper.upPass(admin_acc, password);
+		} catch (Exception e) {
+			throw new Exception("管理员密码修改失败"+e.getMessage());
+		}
+	}
 }

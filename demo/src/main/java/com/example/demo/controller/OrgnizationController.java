@@ -221,4 +221,14 @@ public class OrgnizationController {
 			return JsonMessage.error(e.getMessage());
 		}
 	}
+	
+	@RequestMapping(value = "organ/upPass" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject upPass(@RequestParam("password")String password,@RequestParam("org_id")String org_id) {
+		try {
+			return JsonMessage.success("社团密码修改成功", orgnizationService.upPass(password, org_id));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
 }

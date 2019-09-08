@@ -21,26 +21,6 @@ public class AdministratorController {
 	@Autowired
 	AdministratorService administratorService;
 	
-	@RequestMapping(value = "admin/getAllCollege" , method = RequestMethod.POST)
-	@ResponseBody
-	public JSONObject getAllCollege() {
-		try {
-			return JsonMessage.success("学院信息查询成功", administratorService.getAllCollege());
-		} catch (Exception e) {
-			return JsonMessage.error(e.getMessage());
-		}
-	}
-	
-	@RequestMapping(value = "admin/getMajorByCollege" , method = RequestMethod.POST)
-	@ResponseBody
-	public JSONObject RequestMethod(@RequestParam("col_id")String col_id) {
-		try {
-			return JsonMessage.success("专业信息查询成功", administratorService.getMajorByCollege(col_id));
-		} catch (Exception e) {
-			return JsonMessage.error(e.getMessage());
-		}
-	}
-	
 	@RequestMapping(value = "admin/getAllStudent" , method = RequestMethod.POST)
 	@ResponseBody
 	public JSONObject getAllStudent(@RequestParam("page")int page,@RequestParam("num")int num) {
@@ -128,6 +108,16 @@ public class AdministratorController {
 	public JSONObject publishMessage(@RequestParam("isstudent")boolean isstudent,@RequestParam("isorgan")boolean isorgan,@RequestParam("text")String text) {
 		try {
 			return JsonMessage.success("消息发布成功", administratorService.publishMessage(isstudent, isorgan, text));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "admin/upPass" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject upPass(@RequestParam("admin_acc")String admin_acc,@RequestParam("password")String password) {
+		try {
+			return JsonMessage.success("管理员密码修改成功", administratorService.upPass(admin_acc, password));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

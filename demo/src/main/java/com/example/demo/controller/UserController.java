@@ -9,12 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.services.AdministratorService;
+import com.example.demo.services.StudentsService;
 import com.example.demo.tools.FileUtils;
 import com.example.demo.tools.JsonMessage;
 
@@ -22,6 +26,9 @@ import net.sf.json.JSONObject;
 
 @Controller
 public class UserController {
+	
+	@Autowired
+	AdministratorService administratorService;
 
 	@Value("${img.path}")
 	private String path;
@@ -66,6 +73,39 @@ public class UserController {
 		String filename = request.getParameter("filename");// 普通表单数据
 		File file = new File(path+filename);
 		FileUtils.responseTo(file, response);
+	} 
+	
+	@RequestMapping(value = "/getAllCollege" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getAllCollege() {
+		try {
+			return JsonMessage.success("学院信息查询成功", administratorService.getAllCollege());
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
 	}
-
+	
+	@RequestMapping(value = "/getMajorByCollege" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getMajorByCollege(@RequestParam("col_id")String col_id) {
+		try {
+			return JsonMessage.success("专业信息查询成功", administratorService.getMajorByCollege(col_id));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	@Autowired
+	StudentsService studentService;
+	//获取最新活动
+	@RequestMapping(value = "/newAct" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject newAct() {//@RequestParam("page")int page,@RequestParam("num")int num
+		try {
+			int page = 1;int num = 8;
+			return JsonMessage.success("最新活动获取成功", studentService.getNewAct(page, num));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
 }

@@ -274,4 +274,10 @@
 	and org_student.org_id=#{org_id,jdbcType=INTEGER}
 	</select>
 	
+	<update id="upPass">
+	UPDATE organization 
+	SET organization.password=#{password,jdbcType=VARCHAR}
+	WHERE organization.orgid=#{org_id,jdbcType=VARCHAR}
+	</update>
+	
 </mapper>

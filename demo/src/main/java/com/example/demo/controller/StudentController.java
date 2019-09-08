@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dao.tooldao.StudenttoolMapper;
 import com.example.demo.services.StudentsService;
 import com.example.demo.tools.JsonMessage;
 
@@ -102,4 +103,89 @@ public class StudentController {
 			// TODO: handle exception
 		}
 	}
+	
+	//修改密码
+	@RequestMapping(value = "student/upPass" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject upPassword(@RequestParam("stu_id")String stu_id,@RequestParam("password")String password) {
+		try {
+			return JsonMessage.success("学生密码修改成功", ss.upPass(password, stu_id));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	//获取参加信息
+	@RequestMapping(value = "student/getPartInfo" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getPartInfo(@RequestParam("act_id")String act_id,@RequestParam("stu_id")String stu_id) {
+		try {
+			return JsonMessage.success("参与信息获取成功", ss.getPartInfo(act_id, stu_id));
+		} catch (Exception e) {
+			if("notfound".equals(e.getMessage())) {
+				return JsonMessage.success("未参与活动", null);
+			}else {
+				return JsonMessage.error("参与信息获取失败");
+			}
+		}
+	}
+	
+	//个人报名
+	@RequestMapping(value = "student/postRegister" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject postRigster(@RequestParam("stu_id")String stu_id,@RequestParam("act_id")String act_id) {
+		try {
+			return JsonMessage.success("报名操作成功", ss.addParticipant(act_id, stu_id));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	//创建团队
+	@RequestMapping(value = "student/createTeam" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject createTeam(@RequestParam("stu_id")String stu_id,@RequestParam("act_id")String act_id) {
+		try {
+			return JsonMessage.success("团队建立成功", ss.addParticipant(act_id, stu_id));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	
+	//同意入队
+	@RequestMapping(value = "student/confirm" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject confirm(@RequestParam("stu_id")String stu_id,@RequestParam("mem_id")	String mem_id,@RequestParam("act_id")String act_id) {
+		try {
+			return JsonMessage.success("操作成功", ss.confirmTm(stu_id, mem_id, act_id));
+		} catch (Exception e) {
+			return JsonMessage.error("操作失败"+e.getMessage());
+		}
+	}
+	
+	//申请入团
+	@RequestMapping(value = "student/postTeam" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject postTeam(@RequestParam("stu_id")String stu_id,@RequestParam("leader_id")String leader_id,@RequestParam("act_id")String act_id) {
+		try {
+			return JsonMessage.success("成功入团", ss.joinTeam(leader_id, stu_id,act_id));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	//拒绝入团
+	@RequestMapping(value = "student/cancel" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject cancel(@RequestParam("stu_id")String stu_id,@RequestParam("mem_id")String mem_id,@RequestParam("act_id")String act_id) {
+		try {
+			return JsonMessage.success("拒绝成功", ss.cancel(stu_id, mem_id, act_id));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+
+	
 }

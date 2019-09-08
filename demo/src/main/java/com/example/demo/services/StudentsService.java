@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dao.Act_participantMapper;
 import com.example.demo.dao.CollegeMapper;
 import com.example.demo.dao.MajorMapper;
 import com.example.demo.dao.MessageMapper;
@@ -19,7 +20,9 @@ import com.example.demo.dao.OrginfosMapper;
 import com.example.demo.dao.ScoretypeMapper;
 import com.example.demo.dao.StudentsMapper;
 import com.example.demo.dao.StudentsinfosMapper;
+import com.example.demo.dao.TeammemberMapper;
 import com.example.demo.dao.tooldao.StudenttoolMapper;
+import com.example.demo.domain.Act_participant;
 import com.example.demo.domain.College;
 import com.example.demo.domain.Major;
 import com.example.demo.domain.Message;
@@ -30,6 +33,8 @@ import com.example.demo.domain.Orginfos;
 import com.example.demo.domain.Scoretype;
 import com.example.demo.domain.Students;
 import com.example.demo.domain.Studentsinfos;
+import com.example.demo.domain.Teammember;
+import com.example.demo.tools.TimeExchange;
 
 
 @Service
@@ -507,5 +512,117 @@ public class StudentsService {
 					+ ", post_time=" + post_time + ", check_time=" + check_time + ", score=" + score + "]";
 		}
 		
+	}
+	
+	//学生修改密码
+	public int upPass(String password,String stu_id) throws Exception{
+		try {
+			return studenttoolMapper.upPass(password, stu_id);
+		} catch (Exception e) {
+			throw new Exception("学生密码修改失败"+e.getMessage());
+		}
+	}
+	
+	//学生获取活动参加信息
+	public ArrayList<Map<String,Object>> getPartInfo(String act_id,String stu_id)throws Exception{
+		try {
+			ArrayList<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+			//判断活动是否是团队活动
+			if(studenttoolMapper.isTeamAct(act_id)) {
+				list.add(studenttoolMapper.getMyPartInfo(act_id, stu_id));
+			}else {
+				list.add(studenttoolMapper.getMyPartInfoInTeam(act_id, stu_id));
+			}
+			//判断是否找到参与信息
+			if(list.isEmpty()) {
+				throw new Exception("notfound");
+			}else {
+				ArrayList<String> names = new ArrayList<String>();
+				names.add("posttime");
+				names.add("starttime");
+				TimeExchange.changeTimeDate(list, names);
+			}
+			return list;
+		} catch (Exception e) {
+			throw new Exception("参与信息获取失败"+e.getMessage());
+		}
+	}
+	
+	@Autowired
+	Act_participantMapper act_participantMapper;
+	//学生进行报名与创建团队
+	public int addParticipant(String act_id,String stu_id) throws Exception{
+		try {
+			//构造报名信息对象
+			Act_participant ap = new Act_participant();
+			ap.setActId(Integer.parseInt(act_id));
+			ap.setStuId(studenttoolMapper.getIDByStudentID(stu_id));
+			ap.setIspass(false);
+			
+			Date posttime = new Date();
+			ap.setPosttime(posttime);
+			
+			return act_participantMapper.insert(ap);
+		} catch (Exception e) {
+			throw new Exception("报名失败"+e.getMessage());
+		}
+	}
+	
+	@Autowired
+	TeammemberMapper teammemberMapper;
+	//申请入团
+	public int joinTeam(String leader_id,String stu_id,String act_id) throws Exception{
+		try {
+			//构建队员对象
+			Teammember tm = new Teammember();
+			Date posttime = new Date();
+			tm.setPosttime(posttime);
+			tm.setStuId(studenttoolMapper.getIDByStudentID(stu_id));
+			Map<String,Object> map = studenttoolMapper.getMyPartInfo(act_id, leader_id);
+			tm.setTeamId((int)map.get("id"));
+			return teammemberMapper.insert(tm);
+		} catch (Exception e) {
+			throw new Exception("团队参加申请失败"+e.getMessage());
+		}
+	}
+	
+	
+	//同意入团
+	public int confirmTm(String stu_id,String tm_id,String act_id) throws Exception {
+		try {
+			//查询队长的报名信息
+			Map<String,Object> leaderMap = studenttoolMapper.getLeaderMap(studenttoolMapper.getIDByStudentID(stu_id), Integer.parseInt(act_id));
+			//修改队员的jointime即为同意入团
+			Date jointime = new Date();
+			return studenttoolMapper.confirmTm(jointime, Integer.parseInt(act_id), studenttoolMapper.getIDByStudentID(tm_id));
+		} catch (Exception e) {
+			throw new Exception("队员操作失败"+e.getMessage());
+		}
+	}
+	
+	//拒绝入团
+	public int cancel(String stu_id,String mem_id,String act_id) throws Exception{
+		try {
+			//查询队长报名信息
+			Map<String,Object> leaderMap = studenttoolMapper.getLeaderMap(studenttoolMapper.getIDByStudentID(stu_id), Integer.parseInt(act_id));
+			//删除对应队员行
+			return studenttoolMapper.cancel((int)leaderMap.get("id"),studenttoolMapper.getIDByStudentID(mem_id));
+		} catch (Exception e) {
+			throw new Exception("操作失败"+e.getMessage());
+		}
+	}
+	
+	//获取最新活动
+	public ArrayList<Map<String,Object>> getNewAct(int page,int num)throws Exception{
+		try {
+			int snum = (page-1)*num;
+			ArrayList<Map<String,Object>> list = studenttoolMapper.getNewAct(snum, num);
+			ArrayList<String> names = new ArrayList<String>();
+			names.add("starttime");
+			names.add("endtime");
+			return TimeExchange.changeTimeDate(list, names);
+		} catch (Exception e) {
+			throw new Exception("活动信息获取失败"+e.getMessage());
+		}
 	}
 }

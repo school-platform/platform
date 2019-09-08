@@ -447,4 +447,14 @@ public class OrgnizationService {
 			throw new Exception("活动发布失败"+e.getMessage());
 		}
 	}
+	
+	
+	//社团修改密码
+	public int upPass(String password,String org_id) throws Exception{
+		try {
+			return orgnizationToolMapper.upPass(password, org_id);
+		} catch (Exception e) {
+			throw new Exception("社团密码修改失败"+e.getMessage());
+		}
+	}
 }

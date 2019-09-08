@@ -25,4 +25,95 @@
 	<select id="getIDByStudentID" resultType="int">
 	select id from students where students.studentid=#{studentid,jdbcType=VARCHAR}
 	</select>
+	
+	<update id="upPass">
+	UPDATE students 
+	SET students.password=#{password,jdbcType=VARCHAR}
+	WHERE students.studentid=#{stu_id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="isTeamAct" resultType="boolean">
+	SELECT activity.isteam from activity where activity.id=#{act_id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getMyPartInfo" resultType="java.util.HashMap">
+	SELECT
+	students.studentid,
+	students.`name`,
+	studentsinfos.grade,
+	college.`name`,
+	major.`name`,
+	studentsinfos.phone,
+	act_participant.id as ap_id,
+	act_participant.posttime,
+	act_participant.jointime
+	from act_participant
+	LEFT JOIN students on act_participant.stu_id=students.id
+	LEFT JOIN studentsinfos on students.id=studentsinfos.studentid
+	LEFT JOIN college on studentsinfos.collegeid=college.id
+	LEFT JOIN major on studentsinfos.majorid=major.id
+	where act_participant.act_id=#{act_id,jdbcType=VARCHAR}
+	and students.studentid=#{stu_id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getMyPartInfoInTeam" resultType="java.util.HashMap">
+	SELECT
+	students.studentid,
+	students.`name`,
+	studentsinfos.grade,
+	college.`name` as col_name,
+	major.`name` as maj_name,
+	studentsinfos.phone,
+	act_participant.id as ap_id,
+	act_participant.posttime,
+	act_participant.jointime
+	from teammember
+	LEFT JOIN students on teammember.stu_id=students.id
+	LEFT JOIN studentsinfos on students.id=studentsinfos.studentid
+	LEFT JOIN college on studentsinfos.collegeid=college.id
+	LEFT JOIN major on studentsinfos.majorid=major.id
+	LEFT join act_participant on act_participant.id=teammember.team_id
+	where act_participant.act_id=51
+	and teammember.stu_id=21
+	</select>
+	
+	<update id="confirmTm">
+	UPDATE teammember
+	set teammember.jointime=#{jointime,jdbcType=TIMESTAMP},
+	where teammember.id=#{stu_id,jdbcType=INTEGER}
+	and teammember.stu_id=#{tm_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getLeaderMap" resultType="java.util.HashMap">
+	SELECT * from act_participant
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="cancel">
+	delete from teammember
+	where teammember.team_id=#{team_id,jdbcType=INTEGER}
+	and teammember.stu_id=#{stu_id,jdbcType=INTEGER]}
+	</delete>
+	
+	<select id="getNewAct">
+	SELECT 
+	activity.id,
+	activity.name,
+	activity.img,
+	activity.starttime,
+	actinfos.endtime,
+	population.num
+	from activity
+	left join (
+		SELECT act_participant.act_id,
+			count(act_participant.stu_id) as num
+			from act_participant
+			GROUP BY act_participant.act_id
+	) as population on population.act_id = activity.id
+	left join actinfos on activity.id=actinfos.act_id
+	order by activity.posttime desc
+	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
 </mapper>

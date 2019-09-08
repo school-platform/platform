@@ -72,4 +72,12 @@
 	<select id="getCountExamine" resultType="int">
 	select COUNT(act_participant.id) as sum from act_participant
 	</select>
+	
+	<update id="upPass">
+	UPDATE administrator 
+	SET administrator.password=#{password,jdbcType=VARCHAR}
+	WHERE administrator.account=#{admin_acc,jdbcType=VARCHAR}
+	</update>
+	
+	
 </mapper>

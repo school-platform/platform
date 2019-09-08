@@ -20,4 +20,5 @@ public interface AdministratorToolMapper {
 	int getCountStu();//获取学生总数
 	int getCountOrg();//获取所有社团总数
 	int getCountExamine();//获取所有的审核列表总数
+	int upPass(String admin_acc,String password);//管理员修改密码
 }
