@@ -1,7 +1,10 @@
 package com.example.demo.dao;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.example.demo.domain.Act_participant;
 
+@Mapper
 public interface Act_participantMapper {
     int deleteByPrimaryKey(Integer id);
 

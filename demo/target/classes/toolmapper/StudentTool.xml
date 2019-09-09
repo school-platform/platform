@@ -93,7 +93,7 @@
 	<delete id="cancel">
 	delete from teammember
 	where teammember.team_id=#{team_id,jdbcType=INTEGER}
-	and teammember.stu_id=#{stu_id,jdbcType=INTEGER]}
+	and teammember.stu_id=#{stu_id,jdbcType=INTEGER}
 	</delete>
 	
 	<select id="getNewAct" resultType="java.util.HashMap">
@@ -133,7 +133,7 @@
 	) as population on population.act_id = activity.id
 	left join actinfos on activity.id=actinfos.act_id
 	order by num desc
-	where actinfos.endtime<#{endtime,jdbcType=TIMESTAMP}
+	where actinfos.endtime &lt; #{endtime,jdbcType=TIMESTAMP}
 	limit 0,8
 	</select>
 </mapper>
