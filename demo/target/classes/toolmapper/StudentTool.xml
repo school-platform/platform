@@ -140,4 +140,8 @@
 	where actinfos.endtime &lt; #{endtime,jdbcType=TIMESTAMP}
 	limit 0,8
 	</select>
+	
+	<select id="getMyAct" resultType="java.util.HashMap">
+	
+	</select>
 </mapper>

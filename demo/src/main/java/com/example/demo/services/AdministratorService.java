@@ -94,7 +94,7 @@ public class AdministratorService {
 			TimeExchange.changeTimeDate(list, names);
 			JSONObject json = new JSONObject();
 			json.put("list", list);
-			json.put("count", administratorToolMapper.getCountStu());
+			json.put("count", administratorToolMapper.getCountOrg());
 			return json;
 		} catch (Exception e) {
 			throw new Exception("社团列表查询失败"+e.getMessage());
@@ -196,6 +196,11 @@ public class AdministratorService {
 			names.add("posttime");
 			names.add("extime");
 			TimeExchange.changeTimeDate(list, names);
+			for(Map<String,Object> map:list) {
+				if(!map.containsKey("extime")) {
+					map.put("extime", "");
+				}
+			}
 			JSONObject json = new JSONObject();
 			json.put("list", list);
 			json.put("count", administratorToolMapper.getCountExamine());

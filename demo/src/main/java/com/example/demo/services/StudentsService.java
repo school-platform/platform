@@ -615,9 +615,9 @@ public class StudentsService {
 	}
 	
 	//获取最新活动
-	public ArrayList<Map<String,Object>> getNewAct(int page,int num)throws Exception{
+	public ArrayList<Map<String,Object>> getNewAct(int now,int num)throws Exception{
 		try {
-			int snum = (page-1)*num;
+			int snum = now;
 			ArrayList<Map<String,Object>> list = studenttoolMapper.getNewAct(snum, num);
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("starttime");
@@ -629,10 +629,10 @@ public class StudentsService {
 	}
 	
 	//获取热门活动
-	public ArrayList<Map<String,Object>> getHotAct(int page,int num) throws Exception{
+	public ArrayList<Map<String,Object>> getHotAct(int now,int num) throws Exception{
 		try {
-			int snum = (page-1)*num;
-			ArrayList<Map<String,Object>> list = studenttoolMapper.getHotAct(snum, num);
+//			int snum = (page-1)*num;
+			ArrayList<Map<String,Object>> list = studenttoolMapper.getHotAct(now, num);
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("starttime");
 			names.add("endtime");

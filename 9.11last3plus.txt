@@ -3,3 +3,8 @@
 2、公用方法获取评论列表
 
 3、新增获取评分列表，要和getSignList数据一致，增加checktime字段
+
+4、studentcontroller中添加/student/myact
+input:studentid,now,count
+output:和上一条一致
+

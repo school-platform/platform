@@ -186,6 +186,12 @@ public class StudentController {
 		}
 	}
 	
+	//获取学生的活动
+	@RequestMapping(value = "student/getMyAct" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getMyAct(@RequestParam("stu_id")String stu_id) {
+		
+	}
 
 	
 }

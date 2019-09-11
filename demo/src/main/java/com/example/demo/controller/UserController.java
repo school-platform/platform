@@ -100,10 +100,9 @@ public class UserController {
 	//获取最新活动
 	@RequestMapping(value = "/newAct" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject newAct() {//@RequestParam("page")int page,@RequestParam("num")int num
+	public JSONObject newAct(@RequestParam("now")int now,@RequestParam("num")int num) {//@RequestParam("page")int page,@RequestParam("num")int num
 		try {
-			int page = 1;int num = 8;
-			return JsonMessage.success("最新活动获取成功", studentService.getNewAct(page, num));
+			return JsonMessage.success("最新活动获取成功", studentService.getNewAct(now, num));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}
@@ -113,10 +112,9 @@ public class UserController {
 	//获取热门活动
 	@RequestMapping(value = "/hotAct" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject hotAct() {
+	public JSONObject hotAct(@RequestParam("now")int now,@RequestParam("num")int num) {
 		try {
-			int page = 1;int num = 8;
-			return JsonMessage.success("热门活动获取成功", studentService.getHotAct(page, num));
+			return JsonMessage.success("热门活动获取成功", studentService.getHotAct(now, num));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}
