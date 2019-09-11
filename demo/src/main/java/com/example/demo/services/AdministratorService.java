@@ -158,7 +158,7 @@ public class AdministratorService {
 			throw new Exception("社团添加失败"+e.getMessage());
 		}
 	}
-	
+
 	//修改学生账号
 	public int modifyStudent(JSONObject data) throws Exception{
 		try {
@@ -275,9 +275,11 @@ public class AdministratorService {
 		}
 	}
 	
-	public int upPass(String admin_acc,String password) throws Exception{
+	public int upPass(String old_pass,String admin_acc,String password) throws Exception{
 		try {
-			return administratorToolMapper.upPass(admin_acc, password);
+			if(old_pass.equals(administratorToolMapper.getPass(admin_acc)))
+				return administratorToolMapper.upPass(admin_acc, password);
+			else throw new Exception("旧密码错误");
 		} catch (Exception e) {
 			throw new Exception("管理员密码修改失败"+e.getMessage());
 		}

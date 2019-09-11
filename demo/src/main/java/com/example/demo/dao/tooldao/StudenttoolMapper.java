@@ -20,4 +20,5 @@ public interface StudenttoolMapper {
 	int cancel(int team_id,int stu_id);//删除队员申请
 	ArrayList<Map<String,Object>> getNewAct(int snum,int num);//获取最新活动s
 	ArrayList<Map<String,Object>> getHotAct(int snum,int num);//获取热门活动
+	String getPass(String stu_id);//获取对应学生的密码
 }

@@ -515,9 +515,11 @@ public class StudentsService {
 	}
 	
 	//学生修改密码
-	public int upPass(String password,String stu_id) throws Exception{
+	public int upPass(String old_pass,String password,String stu_id) throws Exception{
 		try {
-			return studenttoolMapper.upPass(password, stu_id);
+			if(old_pass.equals(studenttoolMapper.getPass(stu_id)))
+				return studenttoolMapper.upPass(password, stu_id);
+			else throw new Exception("旧密码错误");
 		} catch (Exception e) {
 			throw new Exception("学生密码修改失败"+e.getMessage());
 		}

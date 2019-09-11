@@ -115,9 +115,9 @@ public class AdministratorController {
 	
 	@RequestMapping(value = "admin/upPass" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject upPass(@RequestParam("admin_acc")String admin_acc,@RequestParam("password")String password) {
+	public JSONObject upPass(@RequestParam("old_pass")String old_pass,@RequestParam("admin_acc")String admin_acc,@RequestParam("password")String password) {
 		try {
-			return JsonMessage.success("管理员密码修改成功", administratorService.upPass(admin_acc, password));
+			return JsonMessage.success("管理员密码修改成功", administratorService.upPass(old_pass,admin_acc, password));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

@@ -79,5 +79,8 @@
 	WHERE administrator.account=#{admin_acc,jdbcType=VARCHAR}
 	</update>
 	
+	<select id="getPass" resultType="string">
+	SELECT administrator.password FROM administrator WHERE administrator.account=#{acc,jdbcType=VARCHAR}
+	</select>
 	
 </mapper>

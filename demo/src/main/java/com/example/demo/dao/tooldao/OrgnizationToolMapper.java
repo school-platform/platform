@@ -41,4 +41,5 @@ public interface OrgnizationToolMapper {
 	int getConuntCommen(int act_id);//获取活动的评论总数
 	Map<String,Object> isVip(int stu_id,int org_id);//判断学生是不是会员
 	int upPass(String password,String org_id);//社团修改密码
+	String getPass(String org_id);//获取社团的密码
 }

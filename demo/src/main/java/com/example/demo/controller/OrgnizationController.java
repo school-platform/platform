@@ -139,7 +139,7 @@ public class OrgnizationController {
 	@ResponseBody
 	public JSONObject registerManager(@RequestParam("act_id")String act_id,@RequestParam("stu_id")String stu_id,@RequestParam("ispass")boolean ispass,@RequestParam("message")String message) {
 		try {
-			return JsonMessage.success("活动报名管理成功", orgnizationService.registerManage(act_id, stu_id, ispass, message));
+			return JsonMessage.success("活动报名管理成功", orgnizationService.registerManage(act_id, stu_id));
 		} catch (Exception e) {
 			return JsonMessage.error("活动报名管理失败");
 		}
@@ -224,9 +224,9 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/upPass" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject upPass(@RequestParam("password")String password,@RequestParam("org_id")String org_id) {
+	public JSONObject upPass(@RequestParam("old_pass")String old_pass,@RequestParam("password")String password,@RequestParam("org_id")String org_id) {
 		try {
-			return JsonMessage.success("社团密码修改成功", orgnizationService.upPass(password, org_id));
+			return JsonMessage.success("社团密码修改成功", orgnizationService.upPass(old_pass,password, org_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

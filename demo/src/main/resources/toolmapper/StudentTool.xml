@@ -32,6 +32,10 @@
 	WHERE students.studentid=#{stu_id,jdbcType=VARCHAR}
 	</update>
 	
+	<select id="getPass" resultType="string">
+	select students.password from students where students.studentid=#{stu_id,jdbcType=VARCHAR}
+	</select>
+	
 	<select id="isTeamAct" resultType="boolean">
 	SELECT activity.isteam from activity where activity.id=#{act_id,jdbcType=VARCHAR}
 	</select>

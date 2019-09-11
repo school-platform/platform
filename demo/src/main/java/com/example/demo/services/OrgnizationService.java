@@ -274,30 +274,56 @@ public class OrgnizationService {
 	@Autowired
 	Msg_stu_orgMapper msg_stu_orgMapper;
 	//报名管理
-	public int registerManage(String act_id,String stu_id,boolean ispass,String message) throws Exception{
+//	public int registerManage(String act_id,String stu_id,boolean ispass,String message) throws Exception{
+//		try {
+//			int actid = Integer.parseInt(act_id);
+//			int stuid = studenttoolMapper.getIDByStudentID(stu_id);
+//			if(ispass) {
+//				Date jointime = new Date();
+//				return orgnizationToolMapper.checkjoin(jointime, actid, stuid);
+//			}
+//			else {
+//				int org_id = activityMapper.getOrgid(actid);
+//				Message msg = new Message();
+//				String orgid = String.valueOf(org_id);
+//				int msg_id = messageMapper.getLastId()+1;
+//				msg.setId(msg_id);
+//				msg.setSenderId(orgid);
+//				msg.setText(message);
+//				msg.setTime(new Date());
+//				messageMapper.insert(msg);
+//				Msg_stu_org mso = new Msg_stu_org();
+//				mso.setMsgId(msg_id);
+//				mso.setStuId(stuid);
+//				msg_stu_orgMapper.insert(mso);
+//				return orgnizationToolMapper.deleteJoin(actid, stuid);
+//			}
+//		} catch (Exception e) {
+//			throw new Exception("报名管理操作失败！"+e.getMessage());
+//		}
+//	}
+	
+	public int registerManage(String act_id,String stu_id) throws Exception{
 		try {
 			int actid = Integer.parseInt(act_id);
 			int stuid = studenttoolMapper.getIDByStudentID(stu_id);
-			if(ispass) {
-				Date jointime = new Date();
-				return orgnizationToolMapper.checkjoin(jointime, actid, stuid);
-			}
-			else {
-				int org_id = activityMapper.getOrgid(actid);
-				Message msg = new Message();
-				String orgid = String.valueOf(org_id);
-				int msg_id = messageMapper.getLastId()+1;
-				msg.setId(msg_id);
-				msg.setSenderId(orgid);
-				msg.setText(message);
-				msg.setTime(new Date());
-				messageMapper.insert(msg);
-				Msg_stu_org mso = new Msg_stu_org();
-				mso.setMsgId(msg_id);
-				mso.setStuId(stuid);
-				msg_stu_orgMapper.insert(mso);
-				return orgnizationToolMapper.deleteJoin(actid, stuid);
-			}
+			Date jointime = new Date();
+			//发送信息
+			int org_id = activityMapper.getOrgid(actid);
+			Message msg = new Message();
+			String orgid = String.valueOf(org_id);
+			int msg_id = messageMapper.getLastId()+1;
+			msg.setId(msg_id);
+			msg.setSenderId(orgid);
+			String message = "恭喜您已经成功通过活动审核，请注意及时参加活动";
+			msg.setText(message);
+			msg.setTime(new Date());
+			messageMapper.insert(msg);
+			Msg_stu_org mso = new Msg_stu_org();
+			mso.setMsgId(msg_id);
+			mso.setStuId(stuid);
+			msg_stu_orgMapper.insert(mso);
+			return orgnizationToolMapper.checkjoin(jointime, actid, stuid);
 		} catch (Exception e) {
 			throw new Exception("报名管理操作失败！"+e.getMessage());
 		}
@@ -340,11 +366,11 @@ public class OrgnizationService {
 			int snum = (page-1)*num;
 			ArrayList<Map<String,Object>> list = orgnizationToolMapper.getComList(actid,snum,num);
 			//组装父评论内容
-			for(Map<String,Object> map:list) {
-				if(map.get("parent_id")!=null) {
-					map.put("parentText", orgnizationToolMapper.getComText((int)map.get("parent_id")));
-				}
-			}
+//			for(Map<String,Object> map:list) {
+//				if(map.get("parent_id")!=null) {
+//					map.put("parentText", orgnizationToolMapper.getComText((int)map.get("parent_id")));
+//				}
+//			}
 			//转换时间类
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("time");
@@ -463,9 +489,11 @@ public class OrgnizationService {
 	
 	
 	//社团修改密码
-	public int upPass(String password,String org_id) throws Exception{
+	public int upPass(String old_pass,String password,String org_id) throws Exception{
 		try {
-			return orgnizationToolMapper.upPass(password, org_id);
+			if(old_pass.equals(orgnizationToolMapper.getPass(org_id)))
+				return orgnizationToolMapper.upPass(password, org_id);
+			else throw new Exception("旧密码不匹配");
 		} catch (Exception e) {
 			throw new Exception("社团密码修改失败"+e.getMessage());
 		}

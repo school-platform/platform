@@ -107,9 +107,9 @@ public class StudentController {
 	//修改密码
 	@RequestMapping(value = "student/upPass" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject upPassword(@RequestParam("stu_id")String stu_id,@RequestParam("password")String password) {
+	public JSONObject upPassword( @RequestParam("old_pass")String old_pass,@RequestParam("stu_id")String stu_id,@RequestParam("password")String password) {
 		try {
-			return JsonMessage.success("学生密码修改成功", ss.upPass(password, stu_id));
+			return JsonMessage.success("学生密码修改成功", ss.upPass(old_pass,password, stu_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

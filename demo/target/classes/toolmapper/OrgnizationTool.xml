@@ -170,8 +170,8 @@
 	students.studentid,
 	students.`name`,
 	studentsinfos.grade,
-	college.`name`,
-	major.`name`,
+	college.`name` as col_name,
+	major.`name` as maj_name,
 	studentsinfos.phone,
 	teammember.posttime,
 	teammember.jointime
@@ -188,8 +188,8 @@
 	students.studentid,
 	students.`name`,
 	studentsinfos.grade,
-	college.`name`,
-	major.`name`,
+	college.`name` as col_name,
+	major.`name` as maj_name,
 	studentsinfos.phone,
 	act_participant.jointime,
 	act_participant.id as ap_id,
@@ -223,9 +223,10 @@
 	</update>
 	
 	<select id="getComList" resultType="java.util.HashMap">
-	SELECT * FROM comments
-	where comments.act_id=#{act_id,jdbcType=INTEGER} 
-	order by id
+	SELECT *,students.studentid FROM comments
+	left join students on comments.sender_id=students.id
+	where comments.act_id=#{act_id,jdbcType=INTEGER}
+	order by comments.id DESC
 	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
 	</select>
 	
@@ -279,5 +280,9 @@
 	SET organization.password=#{password,jdbcType=VARCHAR}
 	WHERE organization.orgid=#{org_id,jdbcType=VARCHAR}
 	</update>
+	
+	<select id="getPass" resultType="string">
+	SELECT organization.password from organization where organization.orgid=#{org_id,jdbcType=VARCHAR}
+	</select>
 	
 </mapper>
