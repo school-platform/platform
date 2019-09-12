@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.services.AdministratorService;
+import com.example.demo.services.OrgnizationService;
 import com.example.demo.services.StudentsService;
 import com.example.demo.tools.FileUtils;
 import com.example.demo.tools.JsonMessage;
@@ -108,13 +109,26 @@ public class UserController {
 		}
 	}
 	
-	@Autowired
+
 	//获取热门活动
 	@RequestMapping(value = "/hotAct" , method = RequestMethod.POST)
 	@ResponseBody
 	public JSONObject hotAct(@RequestParam("now")int now,@RequestParam("num")int num) {
 		try {
 			return JsonMessage.success("热门活动获取成功", studentService.getHotAct(now, num));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	@Autowired
+	OrgnizationService orgnizationService;
+	//获取评论列表
+	@RequestMapping(value = "/getComments" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getComments(@RequestParam("act_id")String act_id,@RequestParam("page")int page,@RequestParam("num")int num) {
+		try {
+			return JsonMessage.success("评论获取成功", orgnizationService.getAllComments(act_id, page, num));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

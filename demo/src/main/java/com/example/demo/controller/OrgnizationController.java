@@ -231,4 +231,14 @@ public class OrgnizationController {
 			return JsonMessage.error(e.getMessage());
 		}
 	}
+	
+	@RequestMapping(value = "organ/getGradeList" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getGradeList(@RequestParam("act_id")String act_id,@RequestParam("page")int page,@RequestParam("num")int num) {
+		try {
+			return JsonMessage.success("评分列表获取成功", orgnizationService.getSignList(act_id, page, num));
+		} catch (Exception e) {
+			return JsonMessage.error("获取评分列表失败，请联系管理员");
+		}
+	}
 }

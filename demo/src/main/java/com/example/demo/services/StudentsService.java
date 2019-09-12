@@ -641,4 +641,18 @@ public class StudentsService {
 			throw new Exception("活动获取失败");
 		}
 	}
+	
+	//获取我的活动
+	public ArrayList<Map<String,Object>> getMyAct(String stu_id,int now ,int count) throws Exception{
+		try {
+			int stuid = studenttoolMapper.getIDByStudentID(stu_id);
+			ArrayList<Map<String,Object>> list = studenttoolMapper.getMyAct(stuid,now,count);
+			ArrayList<String> names = new ArrayList<String>();
+			names.add("starttime");
+			names.add("endtime");
+			return TimeExchange.changeTimeDate(list, names);
+		} catch (Exception e) {
+			throw new Exception("我的活动列表获取失败"+e.getMessage());
+		}
+	}
 }

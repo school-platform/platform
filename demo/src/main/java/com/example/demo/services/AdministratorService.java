@@ -17,6 +17,7 @@ import com.example.demo.dao.OrginfosMapper;
 import com.example.demo.dao.StudentsMapper;
 import com.example.demo.dao.StudentsinfosMapper;
 import com.example.demo.dao.tooldao.AdministratorToolMapper;
+import com.example.demo.dao.tooldao.OrgnizationToolMapper;
 import com.example.demo.domain.Message;
 import com.example.demo.domain.Msg_stu_org;
 import com.example.demo.domain.Organization;
@@ -138,6 +139,35 @@ public class AdministratorService {
 			//组建社团类
 			Organization org = new Organization();
 			int id = organizationMapper.getLastID()+1;
+			org.setId(id);
+			org.setImg("");//设置社团图片
+			org.setName(data.getString("name"));
+			org.setOrgid(data.getString("org_id"));
+			org.setPassword(data.getString("password"));
+			organizationMapper.insert(org);
+			//组建社团信息类
+			Orginfos orginfo = new Orginfos();
+			orginfo.setCollegeid(collegeMapper.getIDByColID(data.getString("col_id")));
+			orginfo.setFoundtime(new Date(data.getString("foundtime")));
+			orginfo.setLeadercontact(data.getString("contact"));
+			orginfo.setLeadername(data.getString("leadername"));
+			orginfo.setMessage(data.getString("message"));
+			orginfo.setOrgid(id);
+			orginfosMapper.insert(orginfo);
+			return 0;
+		} catch (Exception e) {
+			throw new Exception("社团添加失败"+e.getMessage());
+		}
+	}
+	
+	@Autowired
+	OrgnizationToolMapper orgnizationToolMapper;
+	//修改社团账号
+	public int modifyOrgnization(JSONObject data) throws Exception{
+		try {
+			//组建社团类
+			Organization org = new Organization();
+			int id = orgnizationToolMapper.getIDbyOrgID(data.getString("org_id"));
 			org.setId(id);
 			org.setImg("");//设置社团图片
 			org.setName(data.getString("name"));

@@ -142,6 +142,33 @@
 	</select>
 	
 	<select id="getMyAct" resultType="java.util.HashMap">
-	
+	SELECT 
+	activity.id,
+	activity.name,
+	activity.img,
+	activity.starttime,
+	actinfos.endtime,
+	population.num
+	from activity
+	left join 
+	(
+	SELECT act_participant.act_id,
+		count(act_participant.stu_id) as num
+		from act_participant
+		GROUP BY act_participant.act_id
+	) as population on population.act_id = activity.id
+	left join actinfos on activity.id=actinfos.act_id
+	where activity.id in
+	(
+	select act_participant.act_id from act_participant where act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	) 
+	or activity.id in 
+	(
+	SELECT act_participant.act_id from act_participant 
+	left join teammember on teammember.team_id=act_participant.id
+	where teammember.stu_id=#{stu_id,jdbcType=INTEGER}
+	)
+	order by actinfos.endtime DESC
+	limit #{now,jdbcType=INTEGER},#{count,jdbcType=INTEGER}
 	</select>
 </mapper>

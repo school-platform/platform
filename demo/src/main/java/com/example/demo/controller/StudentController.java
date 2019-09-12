@@ -189,8 +189,12 @@ public class StudentController {
 	//获取学生的活动
 	@RequestMapping(value = "student/getMyAct" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getMyAct(@RequestParam("stu_id")String stu_id) {
-		
+	public JSONObject getMyAct(@RequestParam("stu_id")String stu_id,@RequestParam("now")int now,@RequestParam("count")int count) {
+		try {
+			return JsonMessage.success("我的火哦的那个获取成功", ss.getMyAct(stu_id,now,count));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
 	}
 
 	

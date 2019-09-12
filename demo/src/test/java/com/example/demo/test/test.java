@@ -16,6 +16,7 @@ import com.example.demo.dao.StudentsMapper;
 import com.example.demo.dao.tooldao.AdministratorToolMapper;
 import com.example.demo.dao.tooldao.testMapper;
 import com.example.demo.services.AdministratorService;
+import com.example.demo.services.StudentsService;
 
 import net.sf.json.JSONObject;;
 
@@ -28,6 +29,9 @@ public class test {
 	
 	@Autowired
 	AdministratorToolMapper mapper;
+	
+	@Autowired
+	StudentsService studentService;
 	
 	@Ignore
 	@Test
@@ -59,6 +63,12 @@ public class test {
 		json.put("message", "安徽师范大学广播台");
 		json.put("col_id", "0000");
 		service.addOrgnization(json);
+	}
+	
+	@Test
+	public void testGetMyAct() throws Exception{
+		System.out.println(0);
+		System.out.println(studentService.getMyAct("16111205001",0,5));
 	}
 
 }

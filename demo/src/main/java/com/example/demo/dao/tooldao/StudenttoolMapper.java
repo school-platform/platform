@@ -21,4 +21,5 @@ public interface StudenttoolMapper {
 	ArrayList<Map<String,Object>> getNewAct(int snum,int num);//获取最新活动s
 	ArrayList<Map<String,Object>> getHotAct(int snum,int num);//获取热门活动
 	String getPass(String stu_id);//获取对应学生的密码
+	ArrayList<Map<String,Object>> getMyAct(int stu_id,int now,int count);//获取我的活动
 }

@@ -243,6 +243,11 @@ public class OrgnizationService {
 			names.add("checktime");
 			names.add("posttime");
 			list = TimeExchange.changeTimeDate(list, names);
+			//增加checktime字段
+			for(Map<String,Object> map:list) {
+				if(!map.containsKey("checktime"))
+					map.put("checktime", "");
+			}
 			boolean isteam = orgnizationToolMapper.isTeam(actid);
 			if(isteam) {
 				ArrayList<Map<String,Object>> list2;
@@ -384,6 +389,32 @@ public class OrgnizationService {
 			throw new Exception("评论列表获取失败"+e.getMessage());
 		}
 	}
+	
+	//获取活动评论列表
+		public JSONObject getAllComments(String act_id,int page ,int num) throws Exception{
+			try {
+				int actid = Integer.parseInt(act_id);
+				int snum = (page-1)*num;
+				ArrayList<Map<String,Object>> list = orgnizationToolMapper.getComList(actid,snum,num);
+//				组装父评论内容
+				for(Map<String,Object> map:list) {
+					if(map.get("parent_id")!=null) {
+						map.put("parentText", orgnizationToolMapper.getComText((int)map.get("parent_id")));
+					}
+				}
+				//转换时间类
+				ArrayList<String> names = new ArrayList<String>();
+				names.add("time");
+				TimeExchange.changeTimeDate(list, names);
+				//将结果返回
+				JSONObject json = new JSONObject();
+				json.put("list", list);
+				json.put("count",  orgnizationToolMapper.getConuntCommen(actid));
+				return json;
+			} catch (Exception e) {
+				throw new Exception("评论列表获取失败"+e.getMessage());
+			}
+		}
 	
 	@Autowired
 	CommentsMapper commentsMapper;
