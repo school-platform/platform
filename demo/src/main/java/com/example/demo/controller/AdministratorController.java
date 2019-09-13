@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -115,8 +118,10 @@ public class AdministratorController {
 	
 	@RequestMapping(value = "admin/upPass" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject upPass(@RequestParam("old_pass")String old_pass,@RequestParam("admin_acc")String admin_acc,@RequestParam("password")String password) {
+	public JSONObject upPass(@RequestParam("old_pass")String old_pass,HttpServletRequest request,@RequestParam("password")String password) {
 		try {
+			HttpSession session = request.getSession();
+			String admin_acc = (String) session.getAttribute("admin_acc");
 			return JsonMessage.success("管理员密码修改成功", administratorService.upPass(old_pass,admin_acc, password));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());

@@ -65,10 +65,17 @@ public class test {
 		service.addOrgnization(json);
 	}
 	
+	@Ignore
 	@Test
 	public void testGetMyAct() throws Exception{
 		System.out.println(0);
 		System.out.println(studentService.getMyAct("16111205001",0,5));
+	}
+	
+	@Test
+	public void testGetPartInfo() throws Exception{
+		System.out.println(studentService.getPartInfo("51", "16111205000"));
+		
 	}
 
 }

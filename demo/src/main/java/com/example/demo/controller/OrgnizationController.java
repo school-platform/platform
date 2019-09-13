@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +29,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "/organ/getinfo" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getOrgInfos(@RequestParam("org_id")String org_id) {
+	public JSONObject getOrgInfos(HttpServletRequest request) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			System.out.println(orgnizationService.getOrginfos(org_id));
 			return JsonMessage.success("社团信息查询成功", orgnizationService.getOrginfos(org_id));
 		} catch (Exception e) {
@@ -37,8 +42,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "/organ/alterphone" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject alterPhone(@RequestParam("org_id")String org_id, @RequestParam("phone")String phone) {
+	public JSONObject alterPhone(HttpServletRequest request, @RequestParam("phone")String phone) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			return JsonMessage.success("社团联系方式修改成功！", orgnizationService.alterphone(org_id, phone));
 		}catch (Exception e) {
 			return JsonMessage.error("社团联系方式修改成功!");
@@ -47,8 +54,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "/organ/getVipList" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getVipList(@RequestParam("org_id")String org_id,@RequestParam("page")int page,@RequestParam("num")int num) {
+	public JSONObject getVipList(HttpServletRequest request,@RequestParam("page")int page,@RequestParam("num")int num) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			return JsonMessage.success("会员信息查询成功", orgnizationService.getVipList(org_id, page, num));
 		}catch (Exception e) {
 			return JsonMessage.error("会员信息查询失败"+e.getMessage());
@@ -57,8 +66,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/addVip" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject addVip(@RequestParam("org_id")String org_id,@RequestParam("stu_id")String stu_id) {
+	public JSONObject addVip(HttpServletRequest request,@RequestParam("stu_id")String stu_id) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			return JsonMessage.success("会员添加成功", orgnizationService.addVip(org_id, stu_id));
 		}catch (Exception e) {
 			return JsonMessage.error("会员添加失败");
@@ -67,8 +78,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/deleteVip" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject deleteVip(@RequestParam("org_id")String org_id,@RequestParam("stu_id")String stu_id) {
+	public JSONObject deleteVip(HttpServletRequest request,@RequestParam("stu_id")String stu_id) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			return JsonMessage.success("会员删除成功", orgnizationService.deleteVip(org_id, stu_id));
 		}catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -77,8 +90,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/getActList" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getActList(@RequestParam("org_id")String org_id,@RequestParam("page")int page,@RequestParam("num")int num) {
+	public JSONObject getActList(HttpServletRequest request,@RequestParam("page")int page,@RequestParam("num")int num) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			return JsonMessage.success("活动列表查询成功", orgnizationService.getActList(org_id, page, num));
 		}catch (Exception e) {
 			return JsonMessage.error("活动列表查询失败");
@@ -87,8 +102,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/getnews" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getOrgMSg(@RequestParam("org_id")String org_id) {
+	public JSONObject getOrgMSg(HttpServletRequest request) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			return JsonMessage.success("社团消息查询成功", orgnizationService.getOrgMsg(org_id));
 		}catch (Exception e) {
 			return JsonMessage.error("社团信息查询失败"+e.getMessage());
@@ -97,8 +114,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/deletenews" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject deleteOrgMsg(@RequestParam("org_id")String org_id,@RequestParam("msg_id")String msg_id) {
+	public JSONObject deleteOrgMsg(HttpServletRequest request,@RequestParam("msg_id")String msg_id) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			return JsonMessage.success("消息删除成功", orgnizationService.deleteMsgByOrgMsg(org_id, msg_id));
 		}catch (Exception e) {
 			return JsonMessage.error("社团信息删除失败");
@@ -107,8 +126,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/readnews" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject readMsg(@RequestParam("org_id")String org_id,@RequestParam("msg_id")String msg_id) {
+	public JSONObject readMsg(HttpServletRequest request,@RequestParam("msg_id")String msg_id) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			return JsonMessage.success("消息状态修改完成", orgnizationService.readMsg(org_id, msg_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -224,8 +245,10 @@ public class OrgnizationController {
 	
 	@RequestMapping(value = "organ/upPass" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject upPass(@RequestParam("old_pass")String old_pass,@RequestParam("password")String password,@RequestParam("org_id")String org_id) {
+	public JSONObject upPass(@RequestParam("old_pass")String old_pass,@RequestParam("password")String password,HttpServletRequest request) {
 		try {
+			HttpSession session = request.getSession();
+			String org_id = (String) session.getAttribute("org_id");
 			return JsonMessage.success("社团密码修改成功", orgnizationService.upPass(old_pass,password, org_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());

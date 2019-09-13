@@ -285,4 +285,53 @@
 	SELECT organization.password from organization where organization.orgid=#{org_id,jdbcType=VARCHAR}
 	</select>
 	
+	<select id="getRewardStuInAct" resultType="java.util.HashMap">
+	SELECT id,`name`,studentid
+	from students 
+	where id in
+	(select teammember.stu_id 
+	from teammember
+	left join act_participant on teammember.team_id=act_participant.id
+	where act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.score_id is not null)
+	or id in
+	(select act_participant.stu_id 
+	from act_participant
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.score_id is not null)
+	limit #{now,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="CountRewardStuInAct" resultType="int">
+	SELECT count(id)
+	from students 
+	where id in
+	(select teammember.stu_id 
+	from teammember
+	left join act_participant on teammember.team_id=act_participant.id
+	where act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.score_id is not null)
+	or id in
+	(select act_participant.stu_id 
+	from act_participant
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.score_id is not null)
+	</select>
+	
+	<select id="getLeaderRewardInfo" resultType="java.util.HashMap">
+	select act_score.level,act_score.score,act_score.type
+	from act_participant 
+	left join act_score on act_participant.score_id=act_score.id
+	where act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	and act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getMemberRewardInfo" resultType="java.util.HashMap">
+	select act_score.level,act_score.score,act_score.type
+	from teammember
+	left join act_participant on teammember.team_id=act_participant.id
+	left join act_score on act_participant.score_id=act_score.id
+	where teammember.stu_id=#{stu_id,jdbcType=INTEGER}
+	and act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
 </mapper>

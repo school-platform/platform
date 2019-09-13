@@ -42,4 +42,11 @@ public interface OrgnizationToolMapper {
 	Map<String,Object> isVip(int stu_id,int org_id);//判断学生是不是会员
 	int upPass(String password,String org_id);//社团修改密码
 	String getPass(String org_id);//获取社团的密码
+	int getSumCom(int act_id);//获取活动评论总数
+	
+	//公示表用方法
+	ArrayList<Map<String,Object>> getRewardStuInAct(int act,int now,int num);//获取所有参与活动获奖的学生信息
+	Map<String,Object> getLeaderRewardInfo(int stu_id,int act_id);//获取某人某活动具体的学分信息
+	Map<String,Object> getMemberRewardInfo(int stu_id,int act_id);
+	int CountRewardStuInAct(int act_id);//获取所有获奖学生总数
 }

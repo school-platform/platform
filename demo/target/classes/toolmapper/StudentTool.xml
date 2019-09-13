@@ -171,4 +171,21 @@
 	order by actinfos.endtime DESC
 	limit #{now,jdbcType=INTEGER},#{count,jdbcType=INTEGER}
 	</select>
+	
+	<select id="isLeader" resultType="int">
+	select count(id) from act_participant 
+	where stu_id=#{stu_id,jdbcType=INTEGER}
+	and act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="isTeamember" resultType="int">
+	select count(teammember.id) from act_participant 
+	left join teammember on teammember.team_id=act_participant.id
+	where teammember.stu_id=#{stu_id,jdbcType=INTEGER}
+	and act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getSumAct" resultType="int">
+	select count(id) from activity
+	</select>
 </mapper>

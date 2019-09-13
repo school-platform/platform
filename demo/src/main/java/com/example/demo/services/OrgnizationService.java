@@ -394,7 +394,7 @@ public class OrgnizationService {
 		public JSONObject getAllComments(String act_id,int page ,int num) throws Exception{
 			try {
 				int actid = Integer.parseInt(act_id);
-				int snum = (page-1)*num;
+				int snum = page;
 				ArrayList<Map<String,Object>> list = orgnizationToolMapper.getComList(actid,snum,num);
 //				组装父评论内容
 				for(Map<String,Object> map:list) {
@@ -409,7 +409,11 @@ public class OrgnizationService {
 				//将结果返回
 				JSONObject json = new JSONObject();
 				json.put("list", list);
-				json.put("count",  orgnizationToolMapper.getConuntCommen(actid));
+				//判断是否到底
+				boolean islast = false;
+				if(snum+num>orgnizationToolMapper.getConuntCommen(actid))
+					islast = true;
+				json.put("islast",  islast);
 				return json;
 			} catch (Exception e) {
 				throw new Exception("评论列表获取失败"+e.getMessage());
@@ -527,6 +531,33 @@ public class OrgnizationService {
 			else throw new Exception("旧密码不匹配");
 		} catch (Exception e) {
 			throw new Exception("社团密码修改失败"+e.getMessage());
+		}
+	}
+	
+	//获取公示列表
+	public JSONObject getReWardList(int act_id,int now ,int num) throws Exception{
+		try {
+			JSONObject json = new JSONObject();
+			//说去活动中所有获奖学生的id
+			ArrayList<Map<String,Object>> list = orgnizationToolMapper.getRewardStuInAct(act_id,now,num);
+			//循环组装获得的奖项
+			for(Map<String,Object> map:list) {
+				if(studenttoolMapper.isLeader((int)map.get("id"), act_id)>0) {
+					Map<String,Object> map2 = orgnizationToolMapper.getLeaderRewardInfo((int)map.get("id"),act_id);
+					map.putAll(map2);
+				}else {
+					Map<String,Object> map2 = orgnizationToolMapper.getMemberRewardInfo((int)map.get("id"), act_id);
+					map.putAll(map2);
+				}
+			}
+			boolean islast = false;
+			if(now+num>=orgnizationToolMapper.CountRewardStuInAct(act_id))
+				islast = true;
+			json.put("data", list);
+			json.put("islast", islast);
+			return json;
+		} catch (Exception e) {
+			throw new Exception("公示名单获取失败"+e.getMessage());
 		}
 	}
 }

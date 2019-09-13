@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +24,10 @@ public class StudentController {
 	//学生请求详细信息
 	@RequestMapping(value = "/student/getinfo" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getStudentInfo(@RequestParam("stu_id") String stu_id){
+	public JSONObject getStudentInfo(HttpServletRequest request){
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			Object obj = ss.getStudentById(stu_id);
 			System.out.println(obj.toString());
 			return JsonMessage.success("查询学生成功", obj);
@@ -37,8 +42,10 @@ public class StudentController {
 	//学生修改手机号
 	@RequestMapping(value = "student/alterphone" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject alterphone (@RequestParam("stu_id")String stu_id,@RequestParam("phone")String phone) {
+	public JSONObject alterphone (HttpServletRequest request,@RequestParam("phone")String phone) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			ss.alterPhone(stu_id, phone);
 			return JsonMessage.success("更新成功", null);
 		} catch (Exception e) {
@@ -49,8 +56,10 @@ public class StudentController {
 	//学生请求社团信息
 	@RequestMapping(value = "student/getorgs" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getorgs(@RequestParam("stu_id")String stu_id) {
+	public JSONObject getorgs(HttpServletRequest request) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("查询成功",ss.getOrgInfo(stu_id));
 		}catch(Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -60,8 +69,10 @@ public class StudentController {
 	//学生请求消息
 	@RequestMapping(value = "student/getnews" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getNews(@RequestParam("stu_id")String stu_id) {
+	public JSONObject getNews(HttpServletRequest request) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("查询成功", ss.getNews(stu_id));
 		}catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -71,8 +82,10 @@ public class StudentController {
 	//学生删除消息
 	@RequestMapping(value = "student/deletenews" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject deleteNews(@RequestParam("stu_id")String stu_id,@RequestParam("msg_id")String msg_id) {
+	public JSONObject deleteNews(HttpServletRequest request,@RequestParam("msg_id")String msg_id) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			System.out.println(stu_id+"||"+msg_id);
 			return JsonMessage.success("消息删除成功", ss.deleteMessage(stu_id, msg_id));
 		}catch (Exception e) {
@@ -83,8 +96,10 @@ public class StudentController {
 	//学生阅读消息
 	@RequestMapping(value = "student/readnews" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject readNews(@RequestParam("stu_id")String stu_id,@RequestParam("msg_id")String msg_id) {
+	public JSONObject readNews(HttpServletRequest request,@RequestParam("msg_id")String msg_id) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			System.out.println(stu_id+"||"+msg_id);
 			return JsonMessage.success("已成功设置为已读！", ss.readNews(stu_id, msg_id));
 		}catch (Exception e) {
@@ -95,8 +110,10 @@ public class StudentController {
 	//学生请求自己的学分信息
 	@RequestMapping(value = "student/getScoreInfo" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getScoreInfo(@RequestParam("stu_id")String stu_id) {
+	public JSONObject getScoreInfo(HttpServletRequest request) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("学分信息查询成功", ss.getStuScoreInfos(stu_id));
 		}catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -107,8 +124,10 @@ public class StudentController {
 	//修改密码
 	@RequestMapping(value = "student/upPass" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject upPassword( @RequestParam("old_pass")String old_pass,@RequestParam("stu_id")String stu_id,@RequestParam("password")String password) {
+	public JSONObject upPassword( @RequestParam("old_pass")String old_pass,HttpServletRequest request,@RequestParam("password")String password) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("学生密码修改成功", ss.upPass(old_pass,password, stu_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -118,14 +137,16 @@ public class StudentController {
 	//获取参加信息
 	@RequestMapping(value = "student/getPartInfo" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getPartInfo(@RequestParam("act_id")String act_id,@RequestParam("stu_id")String stu_id) {
+	public JSONObject getPartInfo(@RequestParam("act_id")String act_id,HttpServletRequest request) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("参与信息获取成功", ss.getPartInfo(act_id, stu_id));
 		} catch (Exception e) {
 			if("notfound".equals(e.getMessage())) {
-				return JsonMessage.success("未参与活动", null);
+				return JsonMessage.error("学生没有参与该活动");
 			}else {
-				return JsonMessage.error("参与信息获取失败");
+				return JsonMessage.error("参与信息获取失败"+e.getMessage());
 			}
 		}
 	}
@@ -133,8 +154,10 @@ public class StudentController {
 	//个人报名
 	@RequestMapping(value = "student/postRegister" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject postRigster(@RequestParam("stu_id")String stu_id,@RequestParam("act_id")String act_id) {
+	public JSONObject postRigster(HttpServletRequest request,@RequestParam("act_id")String act_id) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("报名操作成功", ss.addParticipant(act_id, stu_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -144,8 +167,10 @@ public class StudentController {
 	//创建团队
 	@RequestMapping(value = "student/createTeam" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject createTeam(@RequestParam("stu_id")String stu_id,@RequestParam("act_id")String act_id) {
+	public JSONObject createTeam(HttpServletRequest request,@RequestParam("act_id")String act_id) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("团队建立成功", ss.addParticipant(act_id, stu_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -156,8 +181,10 @@ public class StudentController {
 	//同意入队
 	@RequestMapping(value = "student/confirm" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject confirm(@RequestParam("stu_id")String stu_id,@RequestParam("mem_id")	String mem_id,@RequestParam("act_id")String act_id) {
+	public JSONObject confirm(HttpServletRequest request,@RequestParam("mem_id")	String mem_id,@RequestParam("act_id")String act_id) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("操作成功", ss.confirmTm(stu_id, mem_id, act_id));
 		} catch (Exception e) {
 			return JsonMessage.error("操作失败"+e.getMessage());
@@ -167,8 +194,10 @@ public class StudentController {
 	//申请入团
 	@RequestMapping(value = "student/postTeam" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject postTeam(@RequestParam("stu_id")String stu_id,@RequestParam("leader_id")String leader_id,@RequestParam("act_id")String act_id) {
+	public JSONObject postTeam(HttpServletRequest request,@RequestParam("leader_id")String leader_id,@RequestParam("act_id")String act_id) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("成功入团", ss.joinTeam(leader_id, stu_id,act_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -178,8 +207,10 @@ public class StudentController {
 	//拒绝入团
 	@RequestMapping(value = "student/cancel" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject cancel(@RequestParam("stu_id")String stu_id,@RequestParam("mem_id")String mem_id,@RequestParam("act_id")String act_id) {
+	public JSONObject cancel(HttpServletRequest request,@RequestParam("mem_id")String mem_id,@RequestParam("act_id")String act_id) {
 		try {
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
 			return JsonMessage.success("拒绝成功", ss.cancel(stu_id, mem_id, act_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
@@ -189,9 +220,11 @@ public class StudentController {
 	//获取学生的活动
 	@RequestMapping(value = "student/getMyAct" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getMyAct(@RequestParam("stu_id")String stu_id,@RequestParam("now")int now,@RequestParam("count")int count) {
+	public JSONObject getMyAct(HttpServletRequest request,@RequestParam("now")int now,@RequestParam("count")int count) {
 		try {
-			return JsonMessage.success("我的火哦的那个获取成功", ss.getMyAct(stu_id,now,count));
+			HttpSession session = request.getSession();
+			String stu_id = (String) session.getAttribute("stu_id");
+			return JsonMessage.success("我的活动获取成功", ss.getMyAct(stu_id,now,count));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

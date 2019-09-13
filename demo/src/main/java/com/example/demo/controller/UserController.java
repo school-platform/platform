@@ -126,9 +126,19 @@ public class UserController {
 	//获取评论列表
 	@RequestMapping(value = "/getComments" , method = RequestMethod.POST)
 	@ResponseBody
-	public JSONObject getComments(@RequestParam("act_id")String act_id,@RequestParam("page")int page,@RequestParam("num")int num) {
+	public JSONObject getComments(@RequestParam("act_id")String act_id,@RequestParam("now")int now,@RequestParam("num")int num) {
 		try {
-			return JsonMessage.success("评论获取成功", orgnizationService.getAllComments(act_id, page, num));
+			return JsonMessage.success("评论获取成功", orgnizationService.getAllComments(act_id, now, num));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/getRewardList" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getRewardList(@RequestParam("act_id")int act_id,@RequestParam("now") int now,@RequestParam("num")int num) {
+		try {
+			return JsonMessage.success("公示列表获取成功", orgnizationService.getReWardList(act_id,now,num));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

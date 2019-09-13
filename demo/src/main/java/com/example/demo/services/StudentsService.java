@@ -36,6 +36,8 @@ import com.example.demo.domain.Studentsinfos;
 import com.example.demo.domain.Teammember;
 import com.example.demo.tools.TimeExchange;
 
+import net.sf.json.JSONObject;
+
 
 @Service
 public class StudentsService {
@@ -529,24 +531,26 @@ public class StudentsService {
 	public ArrayList<Map<String,Object>> getPartInfo(String act_id,String stu_id)throws Exception{
 		try {
 			ArrayList<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-			//判断活动是否是团队活动
-			if(studenttoolMapper.isTeamAct(act_id)) {
+			//判断是否找到参与信息
+			int stuid = studenttoolMapper.getIDByStudentID(stu_id);
+			int actid = Integer.parseInt(act_id);
+			System.out.println(studenttoolMapper.isLeader(stuid, actid)+":"+studenttoolMapper.isTeamember(stuid, actid));
+			if(studenttoolMapper.isLeader(stuid, actid)==0&&studenttoolMapper.isTeamember(stuid, actid)==0) {
+				throw new Exception("notfound");
+			}
+			//判断活动是否是团队活动并获取信息
+			else if(studenttoolMapper.isTeamAct(act_id)) {
 				list.add(studenttoolMapper.getMyPartInfo(act_id, stu_id));
 			}else {
 				list.add(studenttoolMapper.getMyPartInfoInTeam(act_id, stu_id));
 			}
-			//判断是否找到参与信息
-			if(list.isEmpty()) {
-				throw new Exception("notfound");
-			}else {
-				ArrayList<String> names = new ArrayList<String>();
-				names.add("posttime");
-				names.add("starttime");
-				TimeExchange.changeTimeDate(list, names);
-			}
+			ArrayList<String> names = new ArrayList<String>();
+			names.add("posttime");
+			names.add("jointime");
+			TimeExchange.changeTimeDate(list, names);
 			return list;
 		} catch (Exception e) {
-			throw new Exception("参与信息获取失败"+e.getMessage());
+			throw new Exception(e.getMessage());
 		}
 	}
 	
@@ -615,42 +619,63 @@ public class StudentsService {
 	}
 	
 	//获取最新活动
-	public ArrayList<Map<String,Object>> getNewAct(int now,int num)throws Exception{
+	public JSONObject getNewAct(int now,int num)throws Exception{
 		try {
 			int snum = now;
+			JSONObject json = new JSONObject();
 			ArrayList<Map<String,Object>> list = studenttoolMapper.getNewAct(snum, num);
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("starttime");
 			names.add("endtime");
-			return TimeExchange.changeTimeDate(list, names);
+			TimeExchange.changeTimeDate(list, names);
+			json.put("data",list);
+			boolean islast = false;
+			if(now+num>=studenttoolMapper.getSumAct())
+				islast = true;
+			json.put("islast",islast);
+			return json;
 		} catch (Exception e) {
 			throw new Exception("活动信息获取失败"+e.getMessage());
 		}
 	}
 	
 	//获取热门活动
-	public ArrayList<Map<String,Object>> getHotAct(int now,int num) throws Exception{
+	public JSONObject getHotAct(int now,int num) throws Exception{
 		try {
 //			int snum = (page-1)*num;
+			JSONObject json = new JSONObject();
 			ArrayList<Map<String,Object>> list = studenttoolMapper.getHotAct(now, num);
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("starttime");
 			names.add("endtime");
-			return TimeExchange.changeTimeDate(list, names);
+			TimeExchange.changeTimeDate(list, names);
+			json.put("data",list);
+			boolean islast = false;
+			if(now+num>=studenttoolMapper.getSumAct())
+				islast = true;
+			json.put("islast",islast);
+			return json;
 		} catch (Exception e) {
 			throw new Exception("活动获取失败");
 		}
 	}
 	
 	//获取我的活动
-	public ArrayList<Map<String,Object>> getMyAct(String stu_id,int now ,int count) throws Exception{
+	public JSONObject getMyAct(String stu_id,int now ,int count) throws Exception{
 		try {
 			int stuid = studenttoolMapper.getIDByStudentID(stu_id);
+			JSONObject json = new JSONObject();
 			ArrayList<Map<String,Object>> list = studenttoolMapper.getMyAct(stuid,now,count);
 			ArrayList<String> names = new ArrayList<String>();
 			names.add("starttime");
 			names.add("endtime");
-			return TimeExchange.changeTimeDate(list, names);
+			TimeExchange.changeTimeDate(list, names);
+			json.put("data",list);
+			boolean islast = false;
+			if(now+count>=studenttoolMapper.getSumAct())
+				islast = true;
+			json.put("islast",islast);
+			return json;
 		} catch (Exception e) {
 			throw new Exception("我的活动列表获取失败"+e.getMessage());
 		}
