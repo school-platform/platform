@@ -25,4 +25,5 @@ public interface StudenttoolMapper {
 	int isLeader(int stu_id,int act_id);//判断学生是不是领队
 	int isTeamember(int stu_id,int act_id);//判断学生是不是队员
 	int getSumAct();//获取活动总数
+	int loginCheck(String stu_id,String pass);//登陆验证
 }

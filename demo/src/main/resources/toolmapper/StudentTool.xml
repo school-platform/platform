@@ -188,4 +188,8 @@
 	<select id="getSumAct" resultType="int">
 	select count(id) from activity
 	</select>
+	
+	<select id="loginCheck" resultType="int">
+	select count(id) from students where studentid=#{stu_id,jdbcType=VARCHAR} and password=#{pass,jdbcType=VARCHAR}
+	</select>
 </mapper>

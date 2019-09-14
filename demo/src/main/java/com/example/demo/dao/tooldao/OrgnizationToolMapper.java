@@ -45,8 +45,12 @@ public interface OrgnizationToolMapper {
 	int getSumCom(int act_id);//获取活动评论总数
 	
 	//公示表用方法
-	ArrayList<Map<String,Object>> getRewardStuInAct(int act,int now,int num);//获取所有参与活动获奖的学生信息
+	ArrayList<Map<String,Object>> getRewardStuInAct(int act_id,int now,int num);//获取所有参与活动获奖的学生信息
 	Map<String,Object> getLeaderRewardInfo(int stu_id,int act_id);//获取某人某活动具体的学分信息
 	Map<String,Object> getMemberRewardInfo(int stu_id,int act_id);
 	int CountRewardStuInAct(int act_id);//获取所有获奖学生总数
+	
+	int loginCheck(String org_id,String pass);//登陆验证
+	
+	String getTextSenderID(int com_id);//获取评论发送者id
 }

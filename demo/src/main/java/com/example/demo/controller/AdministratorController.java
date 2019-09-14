@@ -121,7 +121,7 @@ public class AdministratorController {
 	public JSONObject upPass(@RequestParam("old_pass")String old_pass,HttpServletRequest request,@RequestParam("password")String password) {
 		try {
 			HttpSession session = request.getSession();
-			String admin_acc = (String) session.getAttribute("admin_acc");
+			String admin_acc = (String) session.getAttribute("user_id");
 			return JsonMessage.success("管理员密码修改成功", administratorService.upPass(old_pass,admin_acc, password));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.dao.tooldao.AdministratorToolMapper;
+import com.example.demo.dao.tooldao.OrgnizationToolMapper;
+import com.example.demo.dao.tooldao.StudenttoolMapper;
 import com.example.demo.services.AdministratorService;
 import com.example.demo.services.OrgnizationService;
 import com.example.demo.services.StudentsService;
@@ -30,6 +33,12 @@ public class UserController {
 	
 	@Autowired
 	AdministratorService administratorService;
+	@Autowired
+	StudenttoolMapper studentToolMapper;
+	@Autowired
+	OrgnizationToolMapper orgnizationToolMapper;
+	@Autowired
+	AdministratorToolMapper administratorToolMapper;
 
 	@Value("${img.path}")
 	private String path;
@@ -42,10 +51,17 @@ public class UserController {
 		String pass = request.getParameter("password");// 普通表单数据
 		String type=request.getParameter("type");
 		//验证用户名与密码
-		if(true) {
-			HttpSession session = request.getSession();
-			session.setAttribute("userid", userid);
-			Cookie cookie = new Cookie("userid", userid);
+		boolean flag = false;
+		if("student".equals(type))
+			if(studentToolMapper.loginCheck(userid, pass)>0) flag = true;
+		if("manager".equals(type))
+			if(administratorToolMapper.loginCheck(userid, pass)>0) flag = true;
+		if("orgnization".equals(type))
+			if(orgnizationToolMapper.loginCheck(userid, pass)>0) flag = true;
+		if(flag) {
+			HttpSession session = request.getSession(); 
+			session.setAttribute("user_id", userid);
+			Cookie cookie = new Cookie("user_id", userid);
 			response.addCookie(cookie);
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("userid", userid);
@@ -139,6 +155,16 @@ public class UserController {
 	public JSONObject getRewardList(@RequestParam("act_id")int act_id,@RequestParam("now") int now,@RequestParam("num")int num) {
 		try {
 			return JsonMessage.success("公示列表获取成功", orgnizationService.getReWardList(act_id,now,num));
+		} catch (Exception e) {
+			return JsonMessage.error(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/getActInfo" , method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getActInfo(@RequestParam("act_id")String act_id) {
+		try {
+			return JsonMessage.success("活动信息获取成功", administratorService.getActInfo(act_id));
 		} catch (Exception e) {
 			return JsonMessage.error(e.getMessage());
 		}

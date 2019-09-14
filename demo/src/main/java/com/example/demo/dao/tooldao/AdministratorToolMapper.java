@@ -22,4 +22,6 @@ public interface AdministratorToolMapper {
 	int getCountExamine();//获取所有的审核列表总数
 	int upPass(String admin_acc,String password);//管理员修改密码
 	String getPass(String acc);//获取管理员密码
+	
+	int loginCheck(String acc,String pass);//登陆验证
 }

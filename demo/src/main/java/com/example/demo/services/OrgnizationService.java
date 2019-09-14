@@ -396,10 +396,16 @@ public class OrgnizationService {
 				int actid = Integer.parseInt(act_id);
 				int snum = page;
 				ArrayList<Map<String,Object>> list = orgnizationToolMapper.getComList(actid,snum,num);
-//				组装父评论内容
+////				组装父评论内容
+//				for(Map<String,Object> map:list) {
+//					if(map.get("parent_id")!=null) {
+//						map.put("parentText", orgnizationToolMapper.getComText((int)map.get("parent_id")));
+//					}
+//				}
+				//组装父评论发送者
 				for(Map<String,Object> map:list) {
 					if(map.get("parent_id")!=null) {
-						map.put("parentText", orgnizationToolMapper.getComText((int)map.get("parent_id")));
+						map.put("parentSender", orgnizationToolMapper.getTextSenderID((int)map.get("parent_id")));
 					}
 				}
 				//转换时间类
@@ -539,20 +545,26 @@ public class OrgnizationService {
 		try {
 			JSONObject json = new JSONObject();
 			//说去活动中所有获奖学生的id
+			System.out.println(0);
 			ArrayList<Map<String,Object>> list = orgnizationToolMapper.getRewardStuInAct(act_id,now,num);
 			//循环组装获得的奖项
 			for(Map<String,Object> map:list) {
+				System.out.println(1);
 				if(studenttoolMapper.isLeader((int)map.get("id"), act_id)>0) {
 					Map<String,Object> map2 = orgnizationToolMapper.getLeaderRewardInfo((int)map.get("id"),act_id);
+					System.out.println(2);
 					map.putAll(map2);
 				}else {
 					Map<String,Object> map2 = orgnizationToolMapper.getMemberRewardInfo((int)map.get("id"), act_id);
+					System.out.println(3);
 					map.putAll(map2);
 				}
 			}
 			boolean islast = false;
+			System.out.println(4);
 			if(now+num>=orgnizationToolMapper.CountRewardStuInAct(act_id))
 				islast = true;
+			System.out.println(5);
 			json.put("data", list);
 			json.put("islast", islast);
 			return json;

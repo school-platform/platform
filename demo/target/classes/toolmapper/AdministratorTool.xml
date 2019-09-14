@@ -83,4 +83,8 @@
 	SELECT administrator.password FROM administrator WHERE administrator.account=#{acc,jdbcType=VARCHAR}
 	</select>
 	
+	<select id="loginCheck" resultType="int">
+	select count(id) from administrator where account=#{acc,jdbcType=VARCHAR} and password=#{pass,jdbcType=VARCHAR}
+	</select>
+	
 </mapper>

@@ -334,4 +334,14 @@
 	where teammember.stu_id=#{stu_id,jdbcType=INTEGER}
 	and act_participant.act_id=#{act_id,jdbcType=INTEGER}
 	</select>
+	
+	<select id="loginCheck" resultType="int">
+	select count(id) from organization where orgid=#{org_id,jdbcType=VARCHAR} and password=#{pass,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getTextSenderID" resultType="string">
+	select studentid from students from students
+	LEFT JOIN comments on comments.sender_id=students.id
+	where comments.id=#{com_id,jdbcType=INTEGER}
+	</select>
 </mapper>

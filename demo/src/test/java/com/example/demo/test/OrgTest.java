@@ -78,6 +78,7 @@ public class OrgTest {
 		System.out.println(service.getCommenList("51", 1, 5));
 	}
 	
+	@Ignore
 	@Test
 	public void testAddActivity() throws Exception{
 		JSONObject json = new JSONObject();
@@ -103,5 +104,11 @@ public class OrgTest {
 		json.put("score", ja);
 		
 		service.publishActivity(json);
+	}
+	
+	@Test
+	public void testRewardList() throws Exception{
+		ArrayList<Map<String,Object>> list = mapper.getRewardStuInAct(51, 1, 10);
+		System.out.println(list);
 	}
 }

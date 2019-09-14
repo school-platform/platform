@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class TimeExchange {
 	public static ArrayList<Map<String,Object>> changeTimeDate(ArrayList<Map<String,Object>> list,ArrayList<String> names){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年mm月dd日");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		for(Map<String,Object> map:list) {
 			for(String s:names) {
 				if(!map.containsKey(s)) continue;
