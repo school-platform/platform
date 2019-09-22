@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.TeammemberMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Teammember">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="team_id" jdbcType="INTEGER" property="teamId" />
+    <result column="stu_id" jdbcType="INTEGER" property="stuId" />
+    <result column="jointime" jdbcType="TIMESTAMP" property="jointime" />
+    <result column="posttime" jdbcType="TIMESTAMP" property="posttime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, team_id, stu_id, jointime, posttime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from teammember
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from teammember
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Teammember">
+    insert into teammember (id, team_id, stu_id, 
+      jointime, posttime)
+    values (#{id,jdbcType=INTEGER}, #{teamId,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, 
+      #{jointime,jdbcType=TIMESTAMP}, #{posttime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Teammember">
+    insert into teammember
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="teamId != null">
+        team_id,
+      </if>
+      <if test="stuId != null">
+        stu_id,
+      </if>
+      <if test="jointime != null">
+        jointime,
+      </if>
+      <if test="posttime != null">
+        posttime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null">
+        #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null">
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="jointime != null">
+        #{jointime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="posttime != null">
+        #{posttime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Teammember">
+    update teammember
+    <set>
+      <if test="teamId != null">
+        team_id = #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null">
+        stu_id = #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="jointime != null">
+        jointime = #{jointime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="posttime != null">
+        posttime = #{posttime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Teammember">
+    update teammember
+    set team_id = #{teamId,jdbcType=INTEGER},
+      stu_id = #{stuId,jdbcType=INTEGER},
+      jointime = #{jointime,jdbcType=TIMESTAMP},
+      posttime = #{posttime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

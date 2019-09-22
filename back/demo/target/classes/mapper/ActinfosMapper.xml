@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.ActinfosMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Actinfos">
+    <id column="act_id" jdbcType="INTEGER" property="actId" />
+    <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="max" jdbcType="INTEGER" property="max" />
+    <result column="tmax" jdbcType="INTEGER" property="tmax" />
+    <result column="tmin" jdbcType="INTEGER" property="tmin" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.example.demo.domain.Actinfos">
+    <result column="message" jdbcType="LONGVARCHAR" property="message" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    act_id, endtime, max, tmax, tmin
+  </sql>
+  <sql id="Blob_Column_List">
+    message
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from actinfos
+    where act_id = #{actId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from actinfos
+    where act_id = #{actId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Actinfos">
+    insert into actinfos (act_id, endtime, max, 
+      tmax, tmin, message
+      )
+    values (#{actId,jdbcType=INTEGER}, #{endtime,jdbcType=TIMESTAMP}, #{max,jdbcType=INTEGER}, 
+      #{tmax,jdbcType=INTEGER}, #{tmin,jdbcType=INTEGER}, #{message,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Actinfos">
+    insert into actinfos
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="actId != null">
+        act_id,
+      </if>
+      <if test="endtime != null">
+        endtime,
+      </if>
+      <if test="max != null">
+        max,
+      </if>
+      <if test="tmax != null">
+        tmax,
+      </if>
+      <if test="tmin != null">
+        tmin,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="actId != null">
+        #{actId,jdbcType=INTEGER},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="max != null">
+        #{max,jdbcType=INTEGER},
+      </if>
+      <if test="tmax != null">
+        #{tmax,jdbcType=INTEGER},
+      </if>
+      <if test="tmin != null">
+        #{tmin,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Actinfos">
+    update actinfos
+    <set>
+      <if test="endtime != null">
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="max != null">
+        max = #{max,jdbcType=INTEGER},
+      </if>
+      <if test="tmax != null">
+        tmax = #{tmax,jdbcType=INTEGER},
+      </if>
+      <if test="tmin != null">
+        tmin = #{tmin,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where act_id = #{actId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.demo.domain.Actinfos">
+    update actinfos
+    set endtime = #{endtime,jdbcType=TIMESTAMP},
+      max = #{max,jdbcType=INTEGER},
+      tmax = #{tmax,jdbcType=INTEGER},
+      tmin = #{tmin,jdbcType=INTEGER},
+      message = #{message,jdbcType=LONGVARCHAR}
+    where act_id = #{actId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Actinfos">
+    update actinfos
+    set endtime = #{endtime,jdbcType=TIMESTAMP},
+      max = #{max,jdbcType=INTEGER},
+      tmax = #{tmax,jdbcType=INTEGER},
+      tmin = #{tmin,jdbcType=INTEGER}
+    where act_id = #{actId,jdbcType=INTEGER}
+  </update>
+</mapper>

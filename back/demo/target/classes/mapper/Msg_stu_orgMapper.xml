@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.Msg_stu_orgMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Msg_stu_org">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="stu_id" jdbcType="INTEGER" property="stu_Id" />
+    <result column="msg_id" jdbcType="INTEGER" property="msg_Id" />
+    <result column="isread" jdbcType="BIT" property="isread" />
+    <result column="org_id" jdbcType="INTEGER" property="orgId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, stu_id, msg_id, isread, org_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from msg_stu_org
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByStuID" parameterType="int" resultType="com.example.demo.domain.Msg_stu_org">
+  select * from msg_stu_org where stu_id = #{stu_id}
+  </select>
+  <select id="selectByStuMsg" resultType="com.example.demo.domain.Msg_stu_org">
+  select * from msg_stu_org where stu_id = #{stu_id,jdbcType=INTEGER} and msg_id = #{msg_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from msg_stu_org
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByStuIDMSGID">
+  	delete from msg_stu_org where stu_id = #{stu_id,jdbcType=INTEGER} 
+  	and msg_id = #{msg_id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByStuID">
+  	delete from msg_stu_org where stu_id = #{stu_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.domain.Msg_stu_org">
+    insert into msg_stu_org (id, stu_id, msg_id, 
+      isread, org_id)
+    values (#{id,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{msgId,jdbcType=INTEGER}, 
+      #{isread,jdbcType=BIT}, #{orgId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Msg_stu_org">
+    insert into msg_stu_org
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stuId != null">
+        stu_id,
+      </if>
+      <if test="msgId != null">
+        msg_id,
+      </if>
+      <if test="isread != null">
+        isread,
+      </if>
+      <if test="orgId != null">
+        org_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null">
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="msgId != null">
+        #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="isread != null">
+        #{isread,jdbcType=BIT},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Msg_stu_org">
+    update msg_stu_org
+    <set>
+      <if test="stuId != null">
+        stu_id = #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="msgId != null">
+        msg_id = #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="isread != null">
+        isread = #{isread,jdbcType=BIT},
+      </if>
+      <if test="orgId != null">
+        org_id = #{orgId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.domain.Msg_stu_org">
+    update msg_stu_org
+    set stu_id = #{stuId,jdbcType=INTEGER},
+      msg_id = #{msgId,jdbcType=INTEGER},
+      isread = #{isread,jdbcType=BIT},
+      org_id = #{orgId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

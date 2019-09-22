@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.tooldao.StudenttoolMapper">
+	<select id="selectScoreInfo" resultType="java.util.HashMap">
+	SELECT
+	act_participant.id AS ap_id,
+	act_participant.stu_id AS stu_id,
+	act_participant.act_id AS act_id,
+	act_participant.posttime AS posttime,
+	act_participant.jointime AS jointime,
+	act_participant.checktime AS checktime,
+	act_participant.score_id AS score_id,
+	act_score.`level` AS `level`,
+	act_score.score AS score,
+	act_score.type AS type,
+	activity.`name` AS act_name,
+	activity.starttime AS act_time
+	FROM
+	act_participant
+	INNER JOIN act_score ON act_participant.score_id = act_score.id
+	INNER JOIN activity ON act_participant.act_id = activity.id AND act_score.act_id = activity.id
+	where act_participant.stu_id=#{stu_id,jdbcType=INTEGER} 
+	and act_score.type=#{type,jdbcType=VARCHAR}
+	</select>
+	<select id="getIDByStudentID" resultType="int">
+	select id from students where students.studentid=#{studentid,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="upPass">
+	UPDATE students 
+	SET students.password=#{password,jdbcType=VARCHAR}
+	WHERE students.studentid=#{stu_id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getPass" resultType="string">
+	select students.password from students where students.studentid=#{stu_id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="isTeamAct" resultType="boolean">
+	SELECT activity.isteam from activity where activity.id=#{act_id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getMyPartInfo" resultType="java.util.HashMap">
+	SELECT
+	students.studentid,
+	students.`name`,
+	studentsinfos.grade,
+	college.`name`,
+	major.`name`,
+	studentsinfos.phone,
+	act_participant.id as ap_id,
+	act_participant.posttime,
+	act_participant.jointime
+	from act_participant
+	LEFT JOIN students on act_participant.stu_id=students.id
+	LEFT JOIN studentsinfos on students.id=studentsinfos.studentid
+	LEFT JOIN college on studentsinfos.collegeid=college.id
+	LEFT JOIN major on studentsinfos.majorid=major.id
+	where act_participant.act_id=#{act_id,jdbcType=VARCHAR}
+	and students.studentid=#{stu_id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getMyPartInfoInTeam" resultType="java.util.HashMap">
+	SELECT
+	students.studentid,
+	students.`name`,
+	studentsinfos.grade,
+	college.`name` as col_name,
+	major.`name` as maj_name,
+	studentsinfos.phone,
+	act_participant.id as ap_id,
+	act_participant.posttime,
+	act_participant.jointime
+	from teammember
+	LEFT JOIN students on teammember.stu_id=students.id
+	LEFT JOIN studentsinfos on students.id=studentsinfos.studentid
+	LEFT JOIN college on studentsinfos.collegeid=college.id
+	LEFT JOIN major on studentsinfos.majorid=major.id
+	LEFT join act_participant on act_participant.id=teammember.team_id
+	where act_participant.act_id=51
+	and teammember.stu_id=21
+	</select>
+	
+	<update id="confirmTm">
+	UPDATE teammember
+	set teammember.jointime=#{jointime,jdbcType=TIMESTAMP},
+	where teammember.id=#{stu_id,jdbcType=INTEGER}
+	and teammember.stu_id=#{tm_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getLeaderMap" resultType="java.util.HashMap">
+	SELECT * from act_participant
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="cancel">
+	delete from teammember
+	where teammember.team_id=#{team_id,jdbcType=INTEGER}
+	and teammember.stu_id=#{stu_id,jdbcType=INTEGER}
+	</delete>
+	
+	<select id="getNewAct" resultType="java.util.HashMap">
+	SELECT 
+	activity.id,
+	activity.name,
+	activity.img,
+	activity.starttime,
+	actinfos.endtime,
+	population.num
+	from activity
+	left join (
+		SELECT act_participant.act_id,
+			count(act_participant.stu_id) as num
+			from act_participant
+			GROUP BY act_participant.act_id
+	) as population on population.act_id = activity.id
+	left join actinfos on activity.id=actinfos.act_id
+	order by activity.posttime desc
+	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getHotAct" resultType="java.util.HashMap">
+	SELECT 
+	activity.id,
+	activity.name,
+	activity.img,
+	activity.starttime,
+	actinfos.endtime,
+	population.num
+	from activity
+	left join (
+		SELECT act_participant.act_id,
+			count(act_participant.stu_id) as num
+			from act_participant
+			GROUP BY act_participant.act_id
+	) as population on population.act_id = activity.id
+	left join actinfos on activity.id=actinfos.act_id
+	order by num desc
+	where actinfos.endtime &lt; #{endtime,jdbcType=TIMESTAMP}
+	limit 0,8
+	</select>
+	
+	<select id="getMyAct" resultType="java.util.HashMap">
+	SELECT 
+	activity.id,
+	activity.name,
+	activity.img,
+	activity.starttime,
+	actinfos.endtime,
+	population.num
+	from activity
+	left join 
+	(
+	SELECT act_participant.act_id,
+		count(act_participant.stu_id) as num
+		from act_participant
+		GROUP BY act_participant.act_id
+	) as population on population.act_id = activity.id
+	left join actinfos on activity.id=actinfos.act_id
+	where activity.id in
+	(
+	select act_participant.act_id from act_participant where act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	) 
+	or activity.id in 
+	(
+	SELECT act_participant.act_id from act_participant 
+	left join teammember on teammember.team_id=act_participant.id
+	where teammember.stu_id=#{stu_id,jdbcType=INTEGER}
+	)
+	order by actinfos.endtime DESC
+	limit #{now,jdbcType=INTEGER},#{count,jdbcType=INTEGER}
+	</select>
+	
+	<select id="isLeader" resultType="int">
+	select count(id) from act_participant 
+	where stu_id=#{stu_id,jdbcType=INTEGER}
+	and act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="isTeamember" resultType="int">
+	select count(teammember.id) from act_participant 
+	left join teammember on teammember.team_id=act_participant.id
+	where teammember.stu_id=#{stu_id,jdbcType=INTEGER}
+	and act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getSumAct" resultType="int">
+	select count(id) from activity
+	</select>
+	
+	<select id="loginCheck" resultType="int">
+	select count(id) from students where studentid=#{stu_id,jdbcType=VARCHAR} and password=#{pass,jdbcType=VARCHAR}
+	</select>
+</mapper>

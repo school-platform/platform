@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.tooldao.AdministratorToolMapper">
+	<select id="getAllCollege" resultType="java.util.HashMap">
+	SELECT * from college
+	</select>
+	
+	<select id="getMajorByCollege" resultType="java.util.HashMap">
+	SELECT * from major where major.collegeid=#{col_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getAllStudent" resultType="java.util.HashMap">
+	SELECT 
+	students.*,
+	studentsinfos.*,
+	college.`name` as col_name,
+	major.`name` as maj_name
+	from students
+	LEFT JOIN studentsinfos on students.id=studentsinfos.studentid 
+	LEFT JOIN college on studentsinfos.collegeid=college.id
+	LEFT JOIN major on studentsinfos.majorid=major.id
+	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getAllOrgnization" resultType="java.util.HashMap">
+	SELECT organization.*,orginfos.*,college.`name` as col_name
+	from organization
+	LEFT JOIN orginfos ON organization.id=orginfos.orgid  
+	LEFT JOIN college on orginfos.collegeid=college.id
+	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getAllExamine" resultType="java.util.HashMap">
+	SELECT act_examine.*,organization.`name` as org_name,activity.`name` as act_name
+	from act_examine
+	LEFT JOIN activity on activity.id=act_examine.act_id
+	LEFT JOIN organization on organization.id=activity.org_id
+	order by posttime desc
+	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<update id="examine">
+	UPDATE act_examine
+	SET 
+		act_examine.extime=#{extime,jdbcType=TIMESTAMP},
+		act_examine.result=#{result,jdbcType=VARCHAR}
+	where act_examine.id=#{ex_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getActInfo" resultType="java.util.HashMap">
+	SELECT activity.*,actinfos.*,college.`name` as org_name
+	from activity
+	LEFT JOIN actinfos on actinfos.act_id=activity.id
+	LEFT JOIN college on college.id=activity.org_id
+	where activity.id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getScoreByAct" resultType="java.util.HashMap">
+	SELECT act_score.*
+	from act_score 
+	where act_score.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getCountStu" resultType="int">
+	select COUNT(students.id) as sum from students
+	</select>
+	
+	<select id="getCountOrg" resultType="int">
+	select COUNT(organization.id) as sum from organization
+	</select>
+	
+	<select id="getCountExamine" resultType="int">
+	select COUNT(act_participant.id) as sum from act_participant
+	</select>
+	
+	<update id="upPass">
+	UPDATE administrator 
+	SET administrator.password=#{password,jdbcType=VARCHAR}
+	WHERE administrator.account=#{admin_acc,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getPass" resultType="string">
+	SELECT administrator.password FROM administrator WHERE administrator.account=#{acc,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="loginCheck" resultType="int">
+	select count(id) from administrator where account=#{acc,jdbcType=VARCHAR} and password=#{pass,jdbcType=VARCHAR}
+	</select>
+	
+</mapper>

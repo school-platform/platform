@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.demo.dao.tooldao.OrgnizationToolMapper">
+	<select id="getOrgInfo" resultType="java.util.HashMap">
+		select
+		organization.orgid,organization.img,orginfos.message,organization.name as org_name,foundtime,college.name as col_name,leadername,leadercontact
+		from organization
+		LEFT JOIN orginfos on organization.id=orginfos.orgid
+		LEFT JOIN college on orginfos.collegeid=college.id
+		where organization.orgid=#{org_id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getIDbyOrgID" resultType="int">
+		select id from organization where orgid=#{org_id,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="alterphone">
+		update orginfos set leadercontact=#{phone,jdbcType=VARCHAR}
+		where orginfos.orgid=(
+			select id from organization where orgid=#{org_id,jdbcType=VARCHAR}
+		)
+	</update>
+	
+	<select id="getVipList" resultType="java.util.HashMap">
+		select 
+			students.studentid as stu_id,
+			students.name as stu_name,
+			studentsinfos.grade as grade,
+			college.`name` as college,
+			major.`name` as major,
+			org_student.jointime as jointime
+		from 
+			students
+			LEFT JOIN studentsinfos on students.id=studentsinfos.studentid
+			LEFT JOIN college on studentsinfos.collegeid=college.id
+			LEFT JOIN major on studentsinfos.majorid=major.id
+			LEFT JOIN org_student on students.id=org_student.stu_id
+		where org_student.org_id=(
+			select id from organization where orgid=#{org_id,jdbcType=VARCHAR}
+		)
+		order by org_student.id
+		limit #{firstnum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<insert id="addVip">
+	insert into org_student
+	(
+		org_student.org_id,
+		org_student.stu_id,
+		org_student.jointime
+	)
+	VALUE
+	(
+		#{org_id,jdbcType=INTEGER},
+		#{stu_id,jdbcType=INTEGER},
+		#{jointime,jdbcType=TIMESTAMP}
+	)
+	</insert>
+	
+	<delete id="deleteVip">
+	delete from org_student
+	where org_student.org_id=#{org_id,jdbcType=INTEGER}
+	and org_student.stu_id=#{stu_id,jdbcType=INTEGER}
+	</delete>
+	
+	<select id="isInOrg" resultType="java.util.HashMap">
+	select * from org_student where stu_id=#{stu_id,jdbcType=INTEGER} and org_id=#{org_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getActList" resultType="java.util.HashMap">
+	select 
+		activity.id,
+		activity.`name`,
+		activity.posttime,
+		act_examine.extime,
+		activity.visible,
+		act_examine.result
+	from activity
+	LEFT JOIN act_examine on act_examine.act_id=activity.id
+	where activity.org_id=#{org_id,jdbcType=INTEGER}
+	order by activity.posttime
+	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getOrgMsg" resultType="java.util.HashMap">
+	SELECT
+	organization.`name`,
+	message.time,
+	message.id,
+	message.text,
+	msg_stu_org.isread
+	from message
+	LEFT JOIN organization on message.sender_id=organization.id
+	LEFT JOIN msg_stu_org on message.id=msg_stu_org.msg_id
+	where msg_stu_org.org_id=#{org_id,jdbcType=INTEGER}
+	order by msg_stu_org.isread
+	</select>
+	
+	<delete id="deleteMsgByOrgMsg">
+	delete from msg_stu_org
+	where msg_stu_org.org_id=#{org_id,jdbcType=VARCHAR}
+	and msg_stu_org.msg_id=#{msg_id,jdbcType=VARCHAR}
+	</delete>
+	
+	<update id="readMsg">
+	update msg_stu_org
+	set msg_stu_org.isread=#{state,jdbcType=BOOLEAN}
+	where msg_stu_org.msg_id=#{msg_id,jdbcType=INTEGER}
+	and msg_stu_org.org_id=#{org_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="msgIsRead" resultType="boolean">
+	SELECT msg_stu_org.isread
+	from msg_stu_org
+	where msg_stu_org.msg_id=#{msg_id,jdbcType=INTEGER}
+	and msg_stu_org.org_id=#{org_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getActInfos" resultType="java.util.HashMap">
+	SELECT
+	activity.id,
+	activity.`name`,
+	activity.img,
+	activity.starttime,
+	activity.endtime,
+	activity.type,
+	activity.isteam,
+	activity.visible,
+	actinfos.message,
+	actinfos.max,
+	actinfos.tmax,
+	actinfos.tmin
+	FROM activity
+	LEFT JOIN actinfos on activity.id=actinfos.act_id
+	where activity.id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getActScores" resultType="java.util.HashMap">
+	SELECT * from act_score where act_score.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getFirstMembers" resultType="java.util.HashMap">
+	SELECT
+	students.studentid,
+	students.`name`,
+	studentsinfos.grade,
+	college.`name`,
+	major.`name`,
+	studentsinfos.phone,
+	act_participant.id as ap_id,
+	act_participant.posttime,
+	act_participant.jointime
+	from act_participant
+	LEFT JOIN students on act_participant.stu_id=students.id
+	LEFT JOIN studentsinfos on students.id=studentsinfos.studentid
+	LEFT JOIN college on studentsinfos.collegeid=college.id
+	LEFT JOIN major on studentsinfos.majorid=major.id
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	order by act_participant.posttime
+	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="isTeam" resultType="boolean">
+	SELECT activity.isteam from activity WHERE activity.id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getTeamMember" resultType="java.util.HashMap">
+	SELECT
+	students.studentid,
+	students.`name`,
+	studentsinfos.grade,
+	college.`name` as col_name,
+	major.`name` as maj_name,
+	studentsinfos.phone,
+	teammember.posttime,
+	teammember.jointime
+	from teammember
+	LEFT JOIN students on students.id=teammember.stu_id
+	LEFT JOIN studentsinfos on studentsinfos.studentid=students.id
+	LEFT JOIN college on college.id=studentsinfos.collegeid
+	LEFT JOIN major on major.id=studentsinfos.majorid
+	where teammember.team_id=#{ap_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getSignList" resultType="java.util.HashMap">
+	select 
+	students.studentid,
+	students.`name`,
+	studentsinfos.grade,
+	college.`name` as col_name,
+	major.`name` as maj_name,
+	studentsinfos.phone,
+	act_participant.jointime,
+	act_participant.id as ap_id,
+	act_participant.checktime
+	from students
+	LEFT JOIN studentsinfos on students.id=studentsinfos.studentid
+	LEFT JOIN college on studentsinfos.collegeid=college.id
+	LEFT JOIN major on studentsinfos.majorid=major.id
+	LEFT JOIN act_participant on act_participant.stu_id=students.id
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<update id="checkjoin">
+	update act_participant
+	SET act_participant.jointime=#{jointime,jdbcType=TIMESTAMP}
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteJoin">
+	DELETE from act_participant 
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	AND act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	</delete>
+	
+	<update id="checkSign">
+	UPDATE act_participant
+	set act_participant.checktime=#{checktime,jdbcType=TIMESTAMP}
+	WHERE act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getComList" resultType="java.util.HashMap">
+	SELECT *,students.studentid FROM comments
+	left join students on comments.sender_id=students.id
+	where comments.act_id=#{act_id,jdbcType=INTEGER}
+	order by comments.id DESC
+	limit #{snum,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getComText" resultType="string">
+	SELECT comments.text from comments where comments.id=#{com_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getScoreList" resultType="java.util.HashMap">
+	SELECT * from act_score where act_score.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<update id="grade">
+	UPDATE act_participant 
+	SET act_participant.score_id=#{score_id,jdbcType=INTEGER}
+	WHERE act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getScoreNum" resultType="int">
+	SELECT COUNT(act_participant.score_id) from act_participant 
+	where score_id=#{score_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getScoreMax" resultType="int">
+	SELECT act_score.max from act_score where act_score.id=#{score_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getCountStu" resultType="int">
+	select COUNT(org_student.stu_id) as sum from org_student where org_student.org_id=#{org_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getCountActivity" resultType="int">
+	select COUNT(activity.id) as sum from activity where activity.org_id=#{org_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getCountParticipant" resultType="int">
+	select COUNT(act_participant.id) as sum from act_participant where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getConuntCommen" resultType="int">
+	select COUNT(comments.id) as sum from comments where comments.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="isVip" resultType="java.util.HashMap">
+	SELECT id from org_student where org_student.stu_id=#{stu_id,jdbcType=INTEGER} 
+	and org_student.org_id=#{org_id,jdbcType=INTEGER}
+	</select>
+	
+	<update id="upPass">
+	UPDATE organization 
+	SET organization.password=#{password,jdbcType=VARCHAR}
+	WHERE organization.orgid=#{org_id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getPass" resultType="string">
+	SELECT organization.password from organization where organization.orgid=#{org_id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getRewardStuInAct" resultType="java.util.HashMap">
+	SELECT id,`name`,studentid
+	from students 
+	where id in
+	(select teammember.stu_id 
+	from teammember
+	left join act_participant on teammember.team_id=act_participant.id
+	where act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.score_id is not null)
+	or id in
+	(select act_participant.stu_id 
+	from act_participant
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.score_id is not null)
+	limit #{now,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+	</select>
+	
+	<select id="CountRewardStuInAct" resultType="int">
+	SELECT count(id)
+	from students 
+	where id in
+	(select teammember.stu_id 
+	from teammember
+	left join act_participant on teammember.team_id=act_participant.id
+	where act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.score_id is not null)
+	or id in
+	(select act_participant.stu_id 
+	from act_participant
+	where act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	and act_participant.score_id is not null)
+	</select>
+	
+	<select id="getLeaderRewardInfo" resultType="java.util.HashMap">
+	select act_score.level,act_score.score,act_score.type
+	from act_participant 
+	left join act_score on act_participant.score_id=act_score.id
+	where act_participant.stu_id=#{stu_id,jdbcType=INTEGER}
+	and act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getMemberRewardInfo" resultType="java.util.HashMap">
+	select act_score.level,act_score.score,act_score.type
+	from teammember
+	left join act_participant on teammember.team_id=act_participant.id
+	left join act_score on act_participant.score_id=act_score.id
+	where teammember.stu_id=#{stu_id,jdbcType=INTEGER}
+	and act_participant.act_id=#{act_id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="loginCheck" resultType="int">
+	select count(id) from organization where orgid=#{org_id,jdbcType=VARCHAR} and password=#{pass,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getTextSenderID" resultType="string">
+	select studentid from students from students
+	LEFT JOIN comments on comments.sender_id=students.id
+	where comments.id=#{com_id,jdbcType=INTEGER}
+	</select>
+</mapper>
